@@ -1,8 +1,8 @@
 package ar.edu.um.tesoreria.facturador.kotlin.model.dto
 
-data class TipoPagoDto(
+data class ProductoDto(
 
-    var tipoPagoId: Int? = null,
+    var productoId: Int? = null,
     var nombre: String = ""
 
 )
