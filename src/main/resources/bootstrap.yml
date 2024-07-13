@@ -20,7 +20,7 @@ spring:
 
 logging:
   level:
-    ar.edu.um.tesoreria.facturador: ${app.logging}
+    um.tesoreria.facturador: ${app.logging}
     web: ${app.logging}
     org:
       springframework.cloud.config: ${app.logging}
