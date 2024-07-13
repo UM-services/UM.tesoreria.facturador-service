@@ -76,17 +76,17 @@ public class FacturadorService {
             log.debug("facturacionDTO=null");
         }
 
-        try {
-            facturacionDTO = facturacionElectronicaService.facturar(facturacionDTO, empresa.getNegocioId());
-            try {
-                log.debug("facturacionDTO (after)={}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacionDTO));
-            } catch (JsonProcessingException e) {
-                log.debug("facturacionDTO=null");
-            }
-        } catch (WebClientResponseException e) {
-            log.debug("Servicio de Facturación NO disponible");
-            return false;
-        }
+//        try {
+//            facturacionDTO = facturacionElectronicaClient.facturar(facturacionDTO, empresa.getNegocioId());
+//            try {
+//                log.debug("facturacionDTO (after)={}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacionDTO));
+//            } catch (JsonProcessingException e) {
+//                log.debug("facturacionDTO=null");
+//            }
+//        } catch (WebClientResponseException e) {
+//            log.debug("Servicio de Facturación NO disponible");
+//            return false;
+//        }
 
         if (facturacionDTO.getResultado().equals("A")) {
             // Convierte fechas
@@ -100,29 +100,29 @@ public class FacturadorService {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
             // Registra el resultado de la AFIP
             FacturacionElectronicaDto facturacionElectronica = new FacturacionElectronicaDto.Builder()
-                    .comprobanteId(comprobanteId)
-                    .puntoVenta(facturacionDTO.getPuntoVenta())
+//                    .comprobanteId(comprobanteId)
+//                    .puntoVenta(facturacionDTO.getPuntoVenta())
                     .numeroComprobante(facturacionDTO.getNumeroComprobante())
-                    .clienteId(cliente.getClienteId())
+//                    .clienteId(cliente.getClienteId())
                     .cuit("")
-                    .total(facturacionDTO.getTotal())
-                    .exento(facturacionDTO.getExento())
-                    .neto(facturacionDTO.getNeto())
-                    .neto105(facturacionDTO.getNeto105())
-                    .iva(facturacionDTO.getIva())
-                    .iva105(facturacionDTO.getIva105())
+//                    .total(facturacionDTO.getTotal())
+//                    .exento(facturacionDTO.getExento())
+//                    .neto(facturacionDTO.getNeto())
+//                    .neto105(facturacionDTO.getNeto105())
+//                    .iva(facturacionDTO.getIva())
+//                    .iva105(facturacionDTO.getIva105())
                     .cae(facturacionDTO.getCae())
-                    .fecha(ToolService.dateAbsoluteArgentina().format(dateTimeFormatter))
-                    .caeVencimiento(formatoOutDate.format(vencimientoCae))
-                    .tipoDocumento(facturacionDTO.getTipoDocumento())
-                    .numeroDocumento(new BigDecimal(facturacionDTO.getDocumento()))
+//                    .fecha(ToolService.dateAbsoluteArgentina().format(dateTimeFormatter))
+//                    .caeVencimiento(formatoOutDate.format(vencimientoCae))
+                    .tipoDocumento(String.valueOf(facturacionDTO.getTipoDocumento()))
+//                    .numeroDocumento(new BigDecimal(facturacionDTO.getDocumento()))
                     .build();
             facturacionElectronica = facturacionElectronicaClient.add(facturacionElectronica);
-            try {
-                log.debug("registroCae={}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(registroCae));
-            } catch (JsonProcessingException e) {
-                log.debug("registroCae=null");
-            }
+//            try {
+//                log.debug("registroCae={}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(registroCae));
+//            } catch (JsonProcessingException e) {
+//                log.debug("registroCae=null");
+//            }
             return true;
         }
 
