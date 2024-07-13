@@ -34,7 +34,7 @@ data class ChequeraPagoDto(
     var tipoPagoId: Int? = null,
 
     var tipoPago: TipoPagoDto? = null,
-//    var producto: ProductoDto? = null,
-//    var chequeraCuota: ChequeraCuotaDto? = null
+    var producto: ProductoDto? = null,
+    var chequeraCuota: ChequeraCuotaDto? = null
 
 )
