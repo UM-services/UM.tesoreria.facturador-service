@@ -94,6 +94,12 @@ public class FacturadorService {
             chequeraPago.setChequeraCuota(chequeraCuotaClient.findByUnique(chequeraPago.getFacultadId(), chequeraPago.getTipoChequeraId(), chequeraPago.getChequeraSerieId(), chequeraPago.getProductoId(), chequeraPago.getAlternativaId(), chequeraPago.getCuotaId()));
         }
 
+        try {
+            log.info("Pago: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraPago));
+        } catch (JsonProcessingException e) {
+            log.info("Pago: problema JSON {}", e.getMessage());
+        }
+
         // proceso
         ChequeraSerieDto chequeraSerie = chequeraPago.getChequeraCuota().getChequeraSerie();
         PersonaDto persona = chequeraSerie.getPersona();
