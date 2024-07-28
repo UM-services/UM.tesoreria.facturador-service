@@ -1,10 +1,7 @@
 package um.tesoreria.facturador.service;
 
 import um.tesoreria.facturador.client.tesoreria.afip.FacturacionAfipClient;
-import um.tesoreria.facturador.client.tesoreria.core.ChequeraFacturacionElectronicaClient;
-import um.tesoreria.facturador.client.tesoreria.core.ChequeraPagoClient;
-import um.tesoreria.facturador.client.tesoreria.core.ComprobanteClient;
-import um.tesoreria.facturador.client.tesoreria.core.FacturacionElectronicaClient;
+import um.tesoreria.facturador.client.tesoreria.core.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +24,17 @@ public class FacturadorService {
     private final ChequeraFacturacionElectronicaClient chequeraFacturacionElectronicaClient;
     private final FacturacionElectronicaClient facturacionElectronicaClient;
     private final ChequeraPagoClient chequeraPagoClient;
+    private final ChequeraCuotaClient chequeraCuotaClient;
     private final FacturacionAfipClient facturacionAfipClient;
 
     public FacturadorService(ComprobanteClient comprobanteClient, ChequeraFacturacionElectronicaClient chequeraFacturacionElectronicaClient,
                              FacturacionElectronicaClient facturacionElectronicaClient, ChequeraPagoClient chequeraPagoClient,
-                             FacturacionAfipClient facturacionAfipClient) {
+                             ChequeraCuotaClient chequeraCuotaClient, FacturacionAfipClient facturacionAfipClient) {
         this.comprobanteClient = comprobanteClient;
         this.chequeraFacturacionElectronicaClient = chequeraFacturacionElectronicaClient;
         this.facturacionElectronicaClient = facturacionElectronicaClient;
         this.chequeraPagoClient = chequeraPagoClient;
+        this.chequeraCuotaClient = chequeraCuotaClient;
         this.facturacionAfipClient = facturacionAfipClient;
     }
 
@@ -90,6 +89,12 @@ public class FacturadorService {
         var empresaCuit = "30-51859446-6";
         var empresaRazonSocial = "UNIVERSIDAD DE MENDOZA";
 
+        // verifica la lectura de la cuota
+        if (chequeraPago.getChequeraCuota() == null) {
+            chequeraPago.setChequeraCuota(chequeraCuotaClient.findByUnique(chequeraPago.getFacultadId(), chequeraPago.getTipoChequeraId(), chequeraPago.getChequeraSerieId(), chequeraPago.getProductoId(), chequeraPago.getAlternativaId(), chequeraPago.getCuotaId()));
+        }
+
+        // proceso
         ChequeraSerieDto chequeraSerie = chequeraPago.getChequeraCuota().getChequeraSerie();
         PersonaDto persona = chequeraSerie.getPersona();
         ComprobanteDto comprobante = comprobanteClient.findByComprobanteId(14);
