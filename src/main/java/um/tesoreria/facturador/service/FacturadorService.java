@@ -41,7 +41,7 @@ public class FacturadorService {
 
     public String facturaPendientes() {
         OffsetDateTime now = OffsetDateTime.now().with(LocalTime.MIDNIGHT);
-        OffsetDateTime startDate = now.minusDays(18);
+        OffsetDateTime startDate = now.minusDays(60);
         OffsetDateTime endDate = now.plusDays(2);
         for (OffsetDateTime fechaPago = startDate; fechaPago.isBefore(endDate); fechaPago = fechaPago.plusDays(1)) {
             log.debug("Procesando Fecha de Pago: {}", fechaPago);
