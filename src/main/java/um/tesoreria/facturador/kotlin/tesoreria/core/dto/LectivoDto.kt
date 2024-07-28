@@ -1,4 +1,4 @@
-package um.tesoreria.facturador.kotlin.model.dto
+package um.tesoreria.facturador.kotlin.tesoreria.core.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.OffsetDateTime
