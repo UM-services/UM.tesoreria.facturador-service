@@ -1,16 +1,15 @@
-package um.tesoreria.facturador.client;
+package um.tesoreria.facturador.client.tesoreria.core;
 
-import um.tesoreria.facturador.kotlin.model.dto.FacturacionElectronicaDto;
+import um.tesoreria.facturador.kotlin.tesoreria.core.dto.FacturacionElectronicaDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import um.tesoreria.facturador.kotlin.model.dto.FacturacionElectronicaDto;
 
 import java.util.List;
 
-@FeignClient(name = "core-service/facturacionElectronica")
+@FeignClient(name = "tesoreria-core-service/api/tesoreria/core/facturacionElectronica")
 public interface FacturacionElectronicaClient {
 
     @GetMapping("/chequera/{facultadId}/{tipoChequeraId}/{chequeraSerieId}")
@@ -18,6 +17,9 @@ public interface FacturacionElectronicaClient {
 
     @GetMapping("/{facturacionElectronicaId}")
     FacturacionElectronicaDto findByFacturacionElectronicaId(@PathVariable Long facturacionElectronicaId) ;
+
+    @GetMapping("/pago/{chequeraPagoId}")
+    FacturacionElectronicaDto findByChequeraPagoId(@PathVariable Long chequeraPagoId) ;
 
     @PostMapping("/")
     FacturacionElectronicaDto add(@RequestBody FacturacionElectronicaDto facturacionElectronica) ;

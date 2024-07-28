@@ -16,7 +16,7 @@ eureka:
 
 spring:
   application:
-    name: facturador-service
+    name: tesoreria-facturador-service
 
 logging:
   level:

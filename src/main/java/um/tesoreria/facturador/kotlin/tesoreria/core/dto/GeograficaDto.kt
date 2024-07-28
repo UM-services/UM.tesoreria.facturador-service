@@ -1,4 +1,4 @@
-package um.tesoreria.facturador.kotlin.model.dto
+package um.tesoreria.facturador.kotlin.tesoreria.core.dto
 
 data class GeograficaDto(
 

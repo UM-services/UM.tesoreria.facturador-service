@@ -1,11 +1,10 @@
-package um.tesoreria.facturador.client;
+package um.tesoreria.facturador.client.tesoreria.core;
 
-import um.tesoreria.facturador.kotlin.model.dto.ChequeraFacturacionElectronicaDto;
+import um.tesoreria.facturador.kotlin.tesoreria.core.dto.ChequeraFacturacionElectronicaDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import um.tesoreria.facturador.kotlin.model.dto.ChequeraFacturacionElectronicaDto;
 
-@FeignClient(name = "core-service/chequeraFacturacionElectronica")
+@FeignClient(name = "tesoreria-core-service/api/tesoreria/core/chequeraFacturacionElectronica")
 public interface ChequeraFacturacionElectronicaClient {
 
     @GetMapping("/chequera/{chequeraId}")

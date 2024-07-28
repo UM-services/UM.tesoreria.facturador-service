@@ -1,36 +1,42 @@
 package um.tesoreria.facturador.controller;
 
-import um.tesoreria.facturador.client.ChequeraPagoClient;
-import um.tesoreria.facturador.client.FacturaSenderClient;
-import um.tesoreria.facturador.kotlin.model.dto.ChequeraPagoDto;
-import um.tesoreria.facturador.kotlin.model.dto.FacturacionDto;
+import org.springframework.scheduling.annotation.Scheduled;
+import um.tesoreria.facturador.client.tesoreria.FacturaSenderClient;
+import um.tesoreria.facturador.kotlin.tesoreria.afip.dto.FacturacionDto;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.OffsetDateTime;
-import java.util.List;
+import um.tesoreria.facturador.service.FacturadorService;
 
 @RestController
-@RequestMapping("/api/facturador")
+@RequestMapping("/api/tesoreria/facturador")
 public class FacturadorController {
 
+    private final FacturadorService service;
     private final FacturaSenderClient facturaSenderClient;
 
-    private final ChequeraPagoClient chequeraPagoClient;
-
     @Autowired
-    public FacturadorController(FacturaSenderClient facturaSenderClient, ChequeraPagoClient chequeraPagoClient) {
+    public FacturadorController(FacturadorService service, FacturaSenderClient facturaSenderClient) {
+        this.service = service;
         this.facturaSenderClient = facturaSenderClient;
-        this.chequeraPagoClient = chequeraPagoClient;
     }
 
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
         return ResponseEntity.ok("Hello Facturador");
+    }
+
+    @Scheduled(cron = "0 0 1 * * *")
+    @GetMapping("/facturaPendientes")
+    public ResponseEntity<String> facturaPendientes() {
+        return new ResponseEntity<>(service.facturaPendientes(), HttpStatus.OK);
+    }
+
+    @GetMapping("/facturaOne/{chequeraPagoId}")
+    public ResponseEntity<String> facturaOne(@PathVariable Long chequeraPagoId) {
+        return new ResponseEntity<>(service.facturaOne(chequeraPagoId), HttpStatus.OK);
     }
 
     @CircuitBreaker(name = "facturaSenderCircuitBreaker", fallbackMethod = "fallbackSend")
@@ -41,11 +47,6 @@ public class FacturadorController {
 
     private ResponseEntity<FacturacionDto> fallbackSend(@RequestBody FacturacionDto facturacionDto, RuntimeException exception) {
         return new ResponseEntity("Sender no disponible", HttpStatus.OK);
-    }
-
-    @GetMapping("/pendientesFactura/{fechaPago}")
-    public ResponseEntity<List<ChequeraPagoDto>> pendientesFactura(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime fechaPago) {
-        return new ResponseEntity<>(chequeraPagoClient.pendientesFactura(fechaPago), HttpStatus.OK);
     }
 
 }

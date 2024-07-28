@@ -1,4 +1,4 @@
-package um.tesoreria.facturador.kotlin.model.dto
+package um.tesoreria.facturador.kotlin.tesoreria.afip.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.math.BigDecimal

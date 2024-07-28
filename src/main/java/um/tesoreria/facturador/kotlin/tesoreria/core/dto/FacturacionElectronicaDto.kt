@@ -1,4 +1,4 @@
-package um.tesoreria.facturador.kotlin.model.dto
+package um.tesoreria.facturador.kotlin.tesoreria.core.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import java.math.BigDecimal
@@ -55,7 +55,7 @@ data class FacturacionElectronicaDto(
             apply { this.facturacionElectronicaId = facturacionElectronicaId }
 
         fun chequeraPagoId(chequeraPagoId: Long?) = apply { this.chequeraPagoId = chequeraPagoId }
-        fun comprobanteId(chequeraPagoId: Long?) = apply { this.comprobanteId = comprobanteId }
+        fun comprobanteId(comprobanteId: Int?) = apply { this.comprobanteId = comprobanteId }
         fun numeroComprobante(numeroComprobante: Long) = apply { this.numeroComprobante = numeroComprobante }
         fun personaId(personaId: BigDecimal?) = apply { this.personaId = personaId }
         fun tipoDocumento(tipoDocumento: String?) = apply { this.tipoDocumento = tipoDocumento }
