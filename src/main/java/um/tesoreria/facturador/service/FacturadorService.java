@@ -43,7 +43,7 @@ public class FacturadorService {
         OffsetDateTime startDate = now.minusDays(60);
         OffsetDateTime endDate = now.plusDays(2);
         for (OffsetDateTime fechaPago = startDate; fechaPago.isBefore(endDate); fechaPago = fechaPago.plusDays(1)) {
-            log.debug("Procesando Fecha de Pago: {}", fechaPago);
+            log.info("Procesando Fecha de Pago: {}", fechaPago);
             for (ChequeraPagoDto chequeraPago : chequeraPagoClient.pendientesFactura(fechaPago)) {
                 try {
                     log.debug("Procesando ChequeraPago: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraPago));
@@ -51,13 +51,13 @@ public class FacturadorService {
                     log.debug("Procesando ChequeraPago: {}", e.getMessage());
                 }
                 if (facturaCuota(chequeraPago)) {
-                    log.debug("Facturado Ok");
+                    log.info("Facturado Ok");
                 } else {
-                    log.debug("Facturado NO");
+                    log.info("Facturado NO");
                 }
             }
         }
-        return "Ok";
+        return "Fin proceso";
     }
 
     public String facturaOne(Long chequeraPagoId) {
@@ -74,11 +74,12 @@ public class FacturadorService {
         }
         var chequeraPago = chequeraPagoClient.findByChequeraPagoId(chequeraPagoId);
         try {
-            log.debug("ChequeraPago: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraPago));
+            log.info("Facturando ChequeraPago: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraPago));
         } catch (JsonProcessingException e) {
             log.debug("ChequeraPago: problema JSON {}", e.getMessage());
         }
         if (facturaCuota(chequeraPago)) {
+            log.info("Facturado Ok");
             return "Facturado Ok";
         }
         return "Facturado NO";
