@@ -1,5 +1,5 @@
 app:
-  port: 8097
+  port: ${APP_PORT:8097}
   logging: DEBUG
 
 server:
