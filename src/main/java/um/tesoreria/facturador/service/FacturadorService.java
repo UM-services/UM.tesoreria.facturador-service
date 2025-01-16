@@ -1,11 +1,13 @@
 package um.tesoreria.facturador.service;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import um.tesoreria.facturador.client.tesoreria.afip.FacturacionAfipClient;
 import um.tesoreria.facturador.client.tesoreria.core.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import um.tesoreria.facturador.configuration.RabbitMQConfig;
 import um.tesoreria.facturador.kotlin.tesoreria.core.dto.*;
 import um.tesoreria.facturador.kotlin.tesoreria.afip.dto.FacturacionDto;
 
@@ -26,16 +28,22 @@ public class FacturadorService {
     private final ChequeraPagoClient chequeraPagoClient;
     private final ChequeraCuotaClient chequeraCuotaClient;
     private final FacturacionAfipClient facturacionAfipClient;
+    private final RabbitTemplate rabbitTemplate;
 
-    public FacturadorService(ComprobanteClient comprobanteClient, ChequeraFacturacionElectronicaClient chequeraFacturacionElectronicaClient,
-                             FacturacionElectronicaClient facturacionElectronicaClient, ChequeraPagoClient chequeraPagoClient,
-                             ChequeraCuotaClient chequeraCuotaClient, FacturacionAfipClient facturacionAfipClient) {
+    public FacturadorService(ComprobanteClient comprobanteClient,
+                             ChequeraFacturacionElectronicaClient chequeraFacturacionElectronicaClient,
+                             FacturacionElectronicaClient facturacionElectronicaClient,
+                             ChequeraPagoClient chequeraPagoClient,
+                             ChequeraCuotaClient chequeraCuotaClient,
+                             FacturacionAfipClient facturacionAfipClient,
+                             RabbitTemplate rabbitTemplate) {
         this.comprobanteClient = comprobanteClient;
         this.chequeraFacturacionElectronicaClient = chequeraFacturacionElectronicaClient;
         this.facturacionElectronicaClient = facturacionElectronicaClient;
         this.chequeraPagoClient = chequeraPagoClient;
         this.chequeraCuotaClient = chequeraCuotaClient;
         this.facturacionAfipClient = facturacionAfipClient;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public String facturaPendientes() {
@@ -45,11 +53,7 @@ public class FacturadorService {
         for (OffsetDateTime fechaPago = startDate; fechaPago.isBefore(endDate); fechaPago = fechaPago.plusDays(1)) {
             log.info("Procesando Fecha de Pago: {}", fechaPago);
             for (ChequeraPagoDto chequeraPago : chequeraPagoClient.pendientesFactura(fechaPago)) {
-                try {
-                    log.debug("Procesando ChequeraPago: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraPago));
-                } catch (JsonProcessingException e) {
-                    log.debug("Procesando ChequeraPago: {}", e.getMessage());
-                }
+                logChequeraPago(chequeraPago);
                 if (facturaCuota(chequeraPago)) {
                     log.info("Facturado Ok");
                 } else {
@@ -63,21 +67,13 @@ public class FacturadorService {
     public String facturaOne(Long chequeraPagoId) {
         try {
             var facturacionElectronica = facturacionElectronicaClient.findByChequeraPagoId(chequeraPagoId);
-            try {
-                log.debug("Facturado Electronica: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacionElectronica));
-            } catch (JsonProcessingException e) {
-                log.debug("Facturado Electronica: problema JSON {}", e.getMessage());
-            }
+            logFacturacionElectronica(facturacionElectronica);
             return "ERROR: Facturación previa";
         } catch (Exception e) {
             log.debug("Facturacion pendiente");
         }
         var chequeraPago = chequeraPagoClient.findByChequeraPagoId(chequeraPagoId);
-        try {
-            log.info("Facturando ChequeraPago: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraPago));
-        } catch (JsonProcessingException e) {
-            log.debug("ChequeraPago: problema JSON {}", e.getMessage());
-        }
+        logChequeraPago(chequeraPago);
         if (facturaCuota(chequeraPago)) {
             log.info("Facturado Ok");
             return "Facturado Ok";
@@ -87,30 +83,22 @@ public class FacturadorService {
 
     public boolean facturaCuota(ChequeraPagoDto chequeraPago) {
 
-        var empresaCuit = "30-51859446-6";
-        var empresaRazonSocial = "UNIVERSIDAD DE MENDOZA";
+        // empresaCuit = "30-51859446-6";
+        // empresaRazonSocial = "UNIVERSIDAD DE MENDOZA";
 
         // verifica la lectura de la cuota
         if (chequeraPago.getChequeraCuota() == null) {
             chequeraPago.setChequeraCuota(chequeraCuotaClient.findByUnique(chequeraPago.getFacultadId(), chequeraPago.getTipoChequeraId(), chequeraPago.getChequeraSerieId(), chequeraPago.getProductoId(), chequeraPago.getAlternativaId(), chequeraPago.getCuotaId()));
         }
-
-        try {
-            log.info("Pago: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraPago));
-        } catch (JsonProcessingException e) {
-            log.info("Pago: problema JSON {}", e.getMessage());
-        }
+        logChequeraPago(chequeraPago);
 
         // proceso
         ChequeraSerieDto chequeraSerie = chequeraPago.getChequeraCuota().getChequeraSerie();
+        assert chequeraSerie != null;
         PersonaDto persona = chequeraSerie.getPersona();
         ComprobanteDto comprobante = comprobanteClient.findByComprobanteId(14);
 
-        try {
-            log.debug("Comprobante={}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(comprobante));
-        } catch (JsonProcessingException e) {
-            log.debug("Comprobante=null");
-        }
+        logComprobante(comprobante);
 
         if (comprobante.getFacturacionElectronica() == 0) {
             return false;
@@ -119,9 +107,7 @@ public class FacturadorService {
         ChequeraFacturacionElectronicaDto chequeraFacturacionElectronica = null;
         try {
             chequeraFacturacionElectronica = chequeraFacturacionElectronicaClient.findByChequeraId(chequeraSerie.getChequeraId());
-            log.debug("ChequeraFacturacionElectronica={}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraFacturacionElectronica));
-        } catch (JsonProcessingException e) {
-            log.debug("ChequeraFacturacionElectronica={}", e.getMessage());
+            logChequeraFacturacionElectronica(chequeraFacturacionElectronica);
         } catch (Exception e) {
             chequeraFacturacionElectronica = new ChequeraFacturacionElectronicaDto();
         }
@@ -139,6 +125,7 @@ public class FacturadorService {
         if (numeroDocumento.isEmpty()) {
             tipoDocumento = "DU";
             tipoDocumentoAfip = 96;
+            assert persona != null;
             apellido = persona.getApellido();
             nombre = persona.getNombre();
             numeroDocumento = String.valueOf(persona.getPersonaId()).trim();
@@ -154,19 +141,11 @@ public class FacturadorService {
                 .build();
 
         log.info("Afip Test -> {}", facturacionAfipClient.test());
-        try {
-            log.info("Facturacion {} {}: {}", apellido, nombre, JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacion));
-        } catch (JsonProcessingException e) {
-            log.info("Facturacion {} {}: null", apellido, nombre);
-        }
+        logFacturacion(apellido, nombre, facturacion);
 
         try {
             facturacion = facturacionAfipClient.facturador(facturacion);
-            try {
-                log.info("Facturacion (after) {} {}: {}", apellido, nombre, JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacion));
-            } catch (JsonProcessingException e) {
-                log.info("Facturacion (after) {} {}: null", apellido, nombre);
-            }
+            logFacturacion(apellido, nombre, facturacion);
         } catch (Exception e) {
             log.debug("Servicio de Facturación NO disponible");
             return false;
@@ -178,6 +157,7 @@ public class FacturadorService {
             LocalDate localDate = LocalDate.parse(facturacion.getVencimientoCae(), formatter);
             OffsetDateTime fechaVencimientoCae = OffsetDateTime.of(localDate, LocalTime.MIDNIGHT, ZoneOffset.UTC);
             // Registra el resultado de la AFIP
+            assert persona != null;
             FacturacionElectronicaDto facturacionElectronica = new FacturacionElectronicaDto.Builder()
                     .chequeraPagoId(chequeraPago.getChequeraPagoId())
                     .comprobanteId(comprobante.getComprobanteId())
@@ -193,22 +173,61 @@ public class FacturadorService {
                     .fechaRecibo(OffsetDateTime.now(ZoneOffset.UTC).withHour(0).withMinute(0).withSecond(0).withNano(0))
                     .fechaVencimientoCae(fechaVencimientoCae)
                     .build();
-            try {
-                log.info("Registro de AFIP: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacionElectronica));
-            } catch (JsonProcessingException e) {
-                log.info("Registro de AFIP: {}", e.getMessage());
-            }
+            log.debug("before");
+            logFacturacionElectronica(facturacionElectronica);
             facturacionElectronica = facturacionElectronicaClient.add(facturacionElectronica);
-            try {
-                log.info("Registro de AFIP (after): {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacionElectronica));
-            } catch (JsonProcessingException e) {
-                log.info("Registro de AFIP (after): {}", e.getMessage());
-            }
+            log.debug("encolando envío");
+            sendReciboQueue(facturacionElectronica);
+            log.debug("after");
+            logFacturacionElectronica(facturacionElectronica);
             return true;
         }
-
         return false;
+    }
 
+    private void sendReciboQueue(FacturacionElectronicaDto facturacionElectronica) {
+        log.debug("Processing sendReciboQueue");
+        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_INVOICE, facturacionElectronica);
+    }
+
+    private void logFacturacion(String apellido, String nombre, FacturacionDto facturacion) {
+        try {
+            log.info("Facturacion {} {}: {}", apellido, nombre, JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacion));
+        } catch (JsonProcessingException e) {
+            log.info("Facturacion jsonify error {} {}: {}", apellido, nombre, e.getMessage());
+        }
+    }
+
+    private void logChequeraFacturacionElectronica(ChequeraFacturacionElectronicaDto chequeraFacturacionElectronica) {
+        try {
+            log.debug("ChequeraFacturacionElectronica={}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraFacturacionElectronica));
+        } catch (JsonProcessingException e) {
+            log.debug("ChequeraFacturacionElectronica jsonify error: {}", e.getMessage());
+        }
+    }
+
+    private void logComprobante(ComprobanteDto comprobante) {
+        try {
+            log.debug("Comprobante={}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(comprobante));
+        } catch (JsonProcessingException e) {
+            log.debug("Comprobante jsonify error: {}", e.getMessage());
+        }
+    }
+
+    private void logChequeraPago(ChequeraPagoDto chequeraPago) {
+        try {
+            log.debug("ChequeraPago: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(chequeraPago));
+        } catch (JsonProcessingException e) {
+            log.debug("ChequeraPago jsonify error: {}", e.getMessage());
+        }
+    }
+
+    private void logFacturacionElectronica(FacturacionElectronicaDto facturacionElectronica) {
+        try {
+            log.debug("Facturación Electronica: {}", JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacionElectronica));
+        } catch (JsonProcessingException e) {
+            log.debug("Facturación Electronica jsonify error: {}", e.getMessage());
+        }
     }
 
 }
