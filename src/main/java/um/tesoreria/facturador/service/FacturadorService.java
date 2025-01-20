@@ -190,6 +190,13 @@ public class FacturadorService {
         rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_INVOICE, facturacionElectronica);
     }
 
+    public void testInvoiceQueue(Long facturaElectronicaId) {
+        log.debug("Processing testInvoiceQueue");
+        var facturacionElectronica = facturacionElectronicaClient.findByFacturacionElectronicaId(facturaElectronicaId);
+        logFacturacionElectronica(facturacionElectronica);
+        sendReciboQueue(facturacionElectronica);
+    }
+
     private void logFacturacion(String apellido, String nombre, FacturacionDto facturacion) {
         try {
             log.info("Facturacion {} {}: {}", apellido, nombre, JsonMapper.builder().findAndAddModules().build().writerWithDefaultPrettyPrinter().writeValueAsString(facturacion));
