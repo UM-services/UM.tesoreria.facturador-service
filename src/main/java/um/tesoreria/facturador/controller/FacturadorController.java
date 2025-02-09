@@ -38,6 +38,11 @@ public class FacturadorController {
         return new ResponseEntity<>(service.facturaOne(chequeraPagoId), HttpStatus.OK);
     }
 
+    @GetMapping("/sendOne/{chequeraPagoId}")
+    public ResponseEntity<String> sendOne(@PathVariable Long chequeraPagoId) {
+        return new ResponseEntity<>(service.sendOne(chequeraPagoId), HttpStatus.OK);
+    }
+
     @GetMapping("/testInvoiceQueue/{facturaElectronicaId}")
     public ResponseEntity<Void> testInvoiceQueue(@PathVariable Long facturaElectronicaId) {
         service.testInvoiceQueue(facturaElectronicaId);

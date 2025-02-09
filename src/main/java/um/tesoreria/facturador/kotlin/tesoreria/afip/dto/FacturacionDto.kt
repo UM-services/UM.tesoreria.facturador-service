@@ -62,7 +62,7 @@ data class FacturacionDto(
         var asociadoTipoAfip: Int? = null,
         var asociadoPuntoVenta: Int? = null,
         var asociadoNumeroComprobante: Long? = null,
-        var asociadoFechaComprobante: String? = null,
+        var asociadoFechaComprobante: String? = null
     ) {
         fun tipoDocumento(tipoDocumento: Int) = apply { this.tipoDocumento = tipoDocumento }
         fun documento(documento: String) = apply { this.documento = documento }

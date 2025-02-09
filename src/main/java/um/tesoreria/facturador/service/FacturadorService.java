@@ -47,6 +47,7 @@ public class FacturadorService {
     }
 
     public String facturaPendientes() {
+        log.debug("Processing FacturadorService.facturaPendientes");
         OffsetDateTime now = OffsetDateTime.now().with(LocalTime.MIDNIGHT);
         OffsetDateTime startDate = now.minusDays(60);
         OffsetDateTime endDate = now.plusDays(2);
@@ -65,6 +66,7 @@ public class FacturadorService {
     }
 
     public String facturaOne(Long chequeraPagoId) {
+        log.debug("Processing FacturadorService.facturaOne");
         try {
             var facturacionElectronica = facturacionElectronicaClient.findByChequeraPagoId(chequeraPagoId);
             logFacturacionElectronica(facturacionElectronica);
@@ -81,7 +83,17 @@ public class FacturadorService {
         return "Facturado NO";
     }
 
+    public String sendOne(Long chequeraPagoId) {
+        log.debug("Processing FacturadorService.sendOne");
+        var facturacionElectronica = facturacionElectronicaClient.findByChequeraPagoId(chequeraPagoId);
+        logFacturacionElectronica(facturacionElectronica);
+        log.debug("FacturadorService.sendOne.enviandoRecibo");
+        sendReciboQueue(facturacionElectronica);
+        return "Envío Ok";
+    }
+
     public boolean facturaCuota(ChequeraPagoDto chequeraPago) {
+        log.debug("Processing FacturadorService.facturaCuota");
 
         // empresaCuit = "30-51859446-6";
         // empresaRazonSocial = "UNIVERSIDAD DE MENDOZA";
@@ -186,12 +198,13 @@ public class FacturadorService {
     }
 
     private void sendReciboQueue(FacturacionElectronicaDto facturacionElectronica) {
-        log.debug("Processing sendReciboQueue");
+        log.debug("Processing FacturadorService.sendReciboQueue");
+        log.debug("Encolando envío");
         rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_INVOICE, facturacionElectronica);
     }
 
     public void testInvoiceQueue(Long facturaElectronicaId) {
-        log.debug("Processing testInvoiceQueue");
+        log.debug("Processing FacturadorService.testInvoiceQueue");
         var facturacionElectronica = facturacionElectronicaClient.findByFacturacionElectronicaId(facturaElectronicaId);
         logFacturacionElectronica(facturacionElectronica);
         sendReciboQueue(facturacionElectronica);
