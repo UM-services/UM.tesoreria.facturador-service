@@ -83,13 +83,32 @@ public class FacturadorService {
         return "Facturado NO";
     }
 
-    public String sendOne(Long chequeraPagoId) {
-        log.debug("Processing FacturadorService.sendOne");
-        var facturacionElectronica = facturacionElectronicaClient.findByChequeraPagoId(chequeraPagoId);
+    public String sendOneByChequeraPagoId(Long chequeraPagoId) {
+        log.debug("Processing FacturadorService.sendOneByChequeraPagoId");
+        FacturacionElectronicaDto facturacionElectronica;
+        try {
+            facturacionElectronica = facturacionElectronicaClient.findByChequeraPagoId(chequeraPagoId);
+        } catch (Exception e) {
+            return "Facturación pendiente";
+        }
         logFacturacionElectronica(facturacionElectronica);
-        log.debug("FacturadorService.sendOne.enviandoRecibo");
+        log.debug("FacturadorService.sendOneByChequeraPagoId.enviandoRecibo");
         sendReciboQueue(facturacionElectronica);
-        return "Envío Ok";
+        return "Envío solicitado";
+    }
+
+    public String sendOneByFacturacionElectronicaId(Long facturacionElectronicaId) {
+        log.debug("Processing FacturadorService.sendOneByFacturacionElectronicaId");
+        FacturacionElectronicaDto facturacionElectronica;
+        try {
+            facturacionElectronica = facturacionElectronicaClient.findByFacturacionElectronicaId(facturacionElectronicaId);
+        } catch (Exception e) {
+            return "Facturación pendiente";
+        }
+        logFacturacionElectronica(facturacionElectronica);
+        log.debug("FacturadorService.sendOneByFacturacionElectronicaId.enviandoRecibo");
+        sendReciboQueue(facturacionElectronica);
+        return "Envío solicitado";
     }
 
     public boolean facturaCuota(ChequeraPagoDto chequeraPago) {
