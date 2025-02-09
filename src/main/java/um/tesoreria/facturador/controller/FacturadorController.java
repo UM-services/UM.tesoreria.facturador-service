@@ -38,9 +38,14 @@ public class FacturadorController {
         return new ResponseEntity<>(service.facturaOne(chequeraPagoId), HttpStatus.OK);
     }
 
-    @GetMapping("/sendOne/{chequeraPagoId}")
-    public ResponseEntity<String> sendOne(@PathVariable Long chequeraPagoId) {
-        return new ResponseEntity<>(service.sendOne(chequeraPagoId), HttpStatus.OK);
+    @GetMapping("/sendOne/pago/{chequeraPagoId}")
+    public ResponseEntity<String> sendOneByChequeraPagoId(@PathVariable Long chequeraPagoId) {
+        return new ResponseEntity<>(service.sendOneByChequeraPagoId(chequeraPagoId), HttpStatus.OK);
+    }
+
+    @GetMapping("/sendOne/recibo/{facturacionElectronicaId}")
+    public ResponseEntity<String> sendOneByFacturacionElectronicaId(@PathVariable Long facturacionElectronicaId) {
+        return new ResponseEntity<>(service.sendOneByFacturacionElectronicaId(facturacionElectronicaId), HttpStatus.OK);
     }
 
     @GetMapping("/testInvoiceQueue/{facturaElectronicaId}")
