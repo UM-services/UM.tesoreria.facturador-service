@@ -1,15 +1,14 @@
 package um.tesoreria.facturador.service;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import um.tesoreria.facturador.client.tesoreria.afip.FacturacionAfipClient;
 import um.tesoreria.facturador.client.tesoreria.core.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import um.tesoreria.facturador.configuration.RabbitMQConfig;
 import um.tesoreria.facturador.kotlin.tesoreria.core.dto.*;
 import um.tesoreria.facturador.kotlin.tesoreria.afip.dto.FacturacionDto;
+import um.tesoreria.facturador.service.queue.ReciboQueueService;
 
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -28,7 +27,7 @@ public class FacturadorService {
     private final ChequeraPagoClient chequeraPagoClient;
     private final ChequeraCuotaClient chequeraCuotaClient;
     private final FacturacionAfipClient facturacionAfipClient;
-    private final RabbitTemplate rabbitTemplate;
+    private final ReciboQueueService reciboQueueService;
 
     public FacturadorService(ComprobanteClient comprobanteClient,
                              ChequeraFacturacionElectronicaClient chequeraFacturacionElectronicaClient,
@@ -36,14 +35,14 @@ public class FacturadorService {
                              ChequeraPagoClient chequeraPagoClient,
                              ChequeraCuotaClient chequeraCuotaClient,
                              FacturacionAfipClient facturacionAfipClient,
-                             RabbitTemplate rabbitTemplate) {
+                             ReciboQueueService reciboQueueService) {
         this.comprobanteClient = comprobanteClient;
         this.chequeraFacturacionElectronicaClient = chequeraFacturacionElectronicaClient;
         this.facturacionElectronicaClient = facturacionElectronicaClient;
         this.chequeraPagoClient = chequeraPagoClient;
         this.chequeraCuotaClient = chequeraCuotaClient;
         this.facturacionAfipClient = facturacionAfipClient;
-        this.rabbitTemplate = rabbitTemplate;
+        this.reciboQueueService = reciboQueueService;
     }
 
     public String facturaPendientes() {
@@ -93,7 +92,7 @@ public class FacturadorService {
         }
         logFacturacionElectronica(facturacionElectronica);
         log.debug("FacturadorService.sendOneByChequeraPagoId.enviandoRecibo");
-        sendReciboQueue(facturacionElectronica);
+        reciboQueueService.sendReciboQueue(facturacionElectronica);
         return "Envío solicitado";
     }
 
@@ -107,7 +106,7 @@ public class FacturadorService {
         }
         logFacturacionElectronica(facturacionElectronica);
         log.debug("FacturadorService.sendOneByFacturacionElectronicaId.enviandoRecibo");
-        sendReciboQueue(facturacionElectronica);
+        reciboQueueService.sendReciboQueue(facturacionElectronica);
         return "Envío solicitado";
     }
 
@@ -135,7 +134,7 @@ public class FacturadorService {
             return false;
         }
 
-        ChequeraFacturacionElectronicaDto chequeraFacturacionElectronica = null;
+        ChequeraFacturacionElectronicaDto chequeraFacturacionElectronica;
         try {
             chequeraFacturacionElectronica = chequeraFacturacionElectronicaClient.findByChequeraId(chequeraSerie.getChequeraId());
             logChequeraFacturacionElectronica(chequeraFacturacionElectronica);
@@ -162,6 +161,8 @@ public class FacturadorService {
             numeroDocumento = String.valueOf(persona.getPersonaId()).trim();
         }
 
+        assert tipoAfip != null;
+        assert puntoVenta != null;
         FacturacionDto facturacion = new FacturacionDto.Builder()
                 .tipoDocumento(tipoDocumentoAfip)
                 .documento(numeroDocumento)
@@ -208,7 +209,7 @@ public class FacturadorService {
             logFacturacionElectronica(facturacionElectronica);
             facturacionElectronica = facturacionElectronicaClient.add(facturacionElectronica);
             log.debug("encolando envío");
-            sendReciboQueue(facturacionElectronica);
+            reciboQueueService.sendReciboQueue(facturacionElectronica);
             log.debug("after");
             logFacturacionElectronica(facturacionElectronica);
             return true;
@@ -216,17 +217,11 @@ public class FacturadorService {
         return false;
     }
 
-    private void sendReciboQueue(FacturacionElectronicaDto facturacionElectronica) {
-        log.debug("Processing FacturadorService.sendReciboQueue");
-        log.debug("Encolando envío");
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_INVOICE, facturacionElectronica);
-    }
-
     public void testInvoiceQueue(Long facturaElectronicaId) {
         log.debug("Processing FacturadorService.testInvoiceQueue");
         var facturacionElectronica = facturacionElectronicaClient.findByFacturacionElectronicaId(facturaElectronicaId);
         logFacturacionElectronica(facturacionElectronica);
-        sendReciboQueue(facturacionElectronica);
+        reciboQueueService.sendReciboQueue(facturacionElectronica);
     }
 
     private void logFacturacion(String apellido, String nombre, FacturacionDto facturacion) {
