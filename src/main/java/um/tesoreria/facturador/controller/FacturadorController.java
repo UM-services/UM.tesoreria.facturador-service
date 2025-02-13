@@ -18,11 +18,6 @@ public class FacturadorController {
         this.service = service;
     }
 
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("Hello Facturador");
-    }
-
     @GetMapping("/facturaPendientes")
     public ResponseEntity<String> facturaPendientes() {
         return new ResponseEntity<>(service.facturaPendientes(), HttpStatus.OK);
