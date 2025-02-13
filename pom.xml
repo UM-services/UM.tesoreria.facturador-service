@@ -102,7 +102,6 @@
 			<artifactId>caffeine</artifactId>
 		</dependency>
 
-		<!-- Spring Transaction -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
