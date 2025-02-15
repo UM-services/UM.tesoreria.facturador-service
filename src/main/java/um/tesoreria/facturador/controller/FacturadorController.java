@@ -24,13 +24,20 @@ public class FacturadorController {
     }
 
     @Scheduled(cron = "0 0 2 * * *")
-    public void facturaPendientesScheduled() {
-        new ResponseEntity<>(service.facturaPendientes(), HttpStatus.OK);
+    public ResponseEntity<Void> facturaPendientesScheduled() {
+        service.facturaPendientes();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/facturaOne/{chequeraPagoId}")
     public ResponseEntity<String> facturaOne(@PathVariable Long chequeraPagoId) {
         return new ResponseEntity<>(service.facturaOne(chequeraPagoId), HttpStatus.OK);
+    }
+
+    @Scheduled(cron = "0 0 * * * *")
+    public ResponseEntity<Void> sendPendientesScheduled() {
+        service.sendPendientes();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/sendOne/pago/{chequeraPagoId}")
@@ -46,6 +53,12 @@ public class FacturadorController {
     @GetMapping("/testInvoiceQueue/{facturaElectronicaId}")
     public ResponseEntity<Void> testInvoiceQueue(@PathVariable Long facturaElectronicaId) {
         service.testInvoiceQueue(facturaElectronicaId);
+        return ResponseEntity.ok().build();
+    }
+
+    //@Scheduled(cron = "0 55 15 * * *")
+    public ResponseEntity<Void> testInvoiceQueueScheduled() {
+        service.testManyInvoiceQueue();
         return ResponseEntity.ok().build();
     }
 

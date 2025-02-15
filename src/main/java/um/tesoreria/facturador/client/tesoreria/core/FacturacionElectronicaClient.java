@@ -1,5 +1,7 @@
 package um.tesoreria.facturador.client.tesoreria.core;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import um.tesoreria.facturador.kotlin.tesoreria.core.dto.FacturacionElectronicaDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,9 @@ public interface FacturacionElectronicaClient {
 
     @GetMapping("/chequera/{facultadId}/{tipoChequeraId}/{chequeraSerieId}")
     List<FacturacionElectronicaDto> findAllByChequera(@PathVariable Integer facultadId, @PathVariable Integer tipoChequeraId, @PathVariable Long chequeraSerieId) ;
+
+    @GetMapping("/pendientes")
+    List<FacturacionElectronicaDto> find100Pendientes();
 
     @GetMapping("/{facturacionElectronicaId}")
     FacturacionElectronicaDto findByFacturacionElectronicaId(@PathVariable Long facturacionElectronicaId) ;
