@@ -205,12 +205,10 @@ public class FacturadorService {
                     .fechaRecibo(OffsetDateTime.now(ZoneOffset.UTC).withHour(0).withMinute(0).withSecond(0).withNano(0))
                     .fechaVencimientoCae(fechaVencimientoCae)
                     .build();
-            log.debug("before");
+            log.debug("before add FacturacionElectronica");
             logFacturacionElectronica(facturacionElectronica);
             facturacionElectronica = facturacionElectronicaClient.add(facturacionElectronica);
-            log.debug("encolando envío");
-            reciboQueueService.sendReciboQueue(facturacionElectronica);
-            log.debug("after");
+            log.debug("after add FacturacionElectronica");
             logFacturacionElectronica(facturacionElectronica);
             return true;
         }
