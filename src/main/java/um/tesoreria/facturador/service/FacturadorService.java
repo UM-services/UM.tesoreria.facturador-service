@@ -16,6 +16,9 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -80,6 +83,15 @@ public class FacturadorService {
             return "Facturado Ok";
         }
         return "Facturado NO";
+    }
+
+    public void sendPendientes() {
+        log.debug("Processing FacturadorService.sendPendientes");
+        for (var facturacionElectronica : facturacionElectronicaClient.find100Pendientes()) {
+            logFacturacionElectronica(facturacionElectronica);
+            log.debug("FacturadorService.sendPendientes.enviandoRecibo");
+            reciboQueueService.sendReciboQueue(facturacionElectronica);
+        }
     }
 
     public String sendOneByChequeraPagoId(Long chequeraPagoId) {
@@ -220,6 +232,16 @@ public class FacturadorService {
         var facturacionElectronica = facturacionElectronicaClient.findByFacturacionElectronicaId(facturaElectronicaId);
         logFacturacionElectronica(facturacionElectronica);
         reciboQueueService.sendReciboQueue(facturacionElectronica);
+    }
+
+    public void testManyInvoiceQueue() {
+        log.debug("Processing FacturadorService.testManyInvoiceQueue");
+        List<Long> facturacionElectronicaIds = Arrays.asList(97305L, 135467L, 145274L, 160173L, 173471L, 191979L, 203757L, 215882L, 222657L, 266982L, 266984L, 266985L, 266987L);
+        for (var facturacionElectronicaId : facturacionElectronicaIds) {
+            var facturacionElectronica = facturacionElectronicaClient.findByFacturacionElectronicaId(facturacionElectronicaId);
+            logFacturacionElectronica(facturacionElectronica);
+            reciboQueueService.sendReciboQueue(facturacionElectronica);
+        }
     }
 
     private void logFacturacion(String apellido, String nombre, FacturacionDto facturacion) {
