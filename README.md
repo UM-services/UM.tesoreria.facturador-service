@@ -17,7 +17,7 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 ## 🚀 Stack Tecnológico
 
 - Java 21
-- Spring Boot 3.4.2
+- Spring Boot 3.4.3
 - Spring Cloud 2024.0.0
 - Spring AMQP
 - Kotlin 2.1.10
@@ -34,9 +34,11 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 ### Facturación
 - `GET /facturador/facturaPendientes`: Procesa facturas pendientes
 - `GET /facturador/facturaOne/{chequeraPagoId}`: Procesa una factura específica
+- `GET /facturador/sendPendientes`: Envía recibos pendientes
 - `GET /facturador/sendOneByChequeraPagoId/{chequeraPagoId}`: Envía recibo por ID de chequera
 - `GET /facturador/sendOneByFacturacionElectronicaId/{facturacionElectronicaId}`: Envía recibo por ID de factura
 - `GET /facturador/testInvoiceQueue/{facturaElectronicaId}`: Prueba el envío de recibos
+- `GET /facturador/testManyInvoiceQueue`: Prueba el envío de múltiples recibos
 
 ## 🛠️ Desarrollo
 

@@ -119,7 +119,7 @@ public class FacturadorService {
         logFacturacionElectronica(facturacionElectronica);
         log.debug("FacturadorService.sendOneByFacturacionElectronicaId.enviandoRecibo");
         reciboQueueService.sendReciboQueue(facturacionElectronica);
-        return "Envío solicitado";
+        return "Envío de Recibo Solicitado";
     }
 
     public boolean facturaCuota(ChequeraPagoDto chequeraPago) {
