@@ -34,11 +34,11 @@ public class FacturadorController {
         return new ResponseEntity<>(service.facturaOne(chequeraPagoId), HttpStatus.OK);
     }
 
-    @Scheduled(cron = "0 0 * * * *")
-    public ResponseEntity<Void> sendPendientesScheduled() {
-        service.sendPendientes();
-        return ResponseEntity.ok().build();
-    }
+//    @Scheduled(cron = "0 0 * * * *")
+//    public ResponseEntity<Void> sendPendientesScheduled() {
+//        service.sendPendientes();
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("/sendOne/pago/{chequeraPagoId}")
     public ResponseEntity<String> sendOneByChequeraPagoId(@PathVariable Long chequeraPagoId) {
