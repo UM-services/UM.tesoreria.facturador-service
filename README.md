@@ -35,10 +35,14 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 - `GET /facturador/facturaPendientes`: Procesa facturas pendientes
 - `GET /facturador/facturaOne/{chequeraPagoId}`: Procesa una factura específica
 - `GET /facturador/sendPendientes`: Envía recibos pendientes
-- `GET /facturador/sendOneByChequeraPagoId/{chequeraPagoId}`: Envía recibo por ID de chequera
-- `GET /facturador/sendOneByFacturacionElectronicaId/{facturacionElectronicaId}`: Envía recibo por ID de factura
+- `GET /facturador/sendOne/pago/{chequeraPagoId}`: Envía recibo por ID de chequera
+- `GET /facturador/sendOne/factura/{facturacionElectronicaId}`: Envía recibo por ID de factura
 - `GET /facturador/testInvoiceQueue/{facturaElectronicaId}`: Prueba el envío de recibos
 - `GET /facturador/testManyInvoiceQueue`: Prueba el envío de múltiples recibos
+
+### Notas
+- El envío automático de recibos pendientes está temporalmente desactivado
+- Los endpoints de prueba son solo para desarrollo
 
 ## 🛠️ Desarrollo
 
