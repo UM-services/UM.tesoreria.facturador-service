@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import um.tesoreria.facturador.configuration.RabbitMQConfig;
 import um.tesoreria.facturador.kotlin.tesoreria.core.dto.FacturacionElectronicaDto;
+import um.tesoreria.facturador.model.dto.ReciboMessageDto;
 
 @Service
 @Slf4j
@@ -18,10 +19,10 @@ public class ReciboQueueService {
     }
 
     @Transactional
-    public void sendReciboQueue(FacturacionElectronicaDto facturacionElectronica) {
-        log.debug("Processing FacturadorService.sendReciboQueue");
+    public void sendReciboQueue(ReciboMessageDto reciboMessage) {
+        log.debug("Processing ReciboQueueService.sendReciboQueue");
         log.debug("Encolando envío");
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_INVOICE, facturacionElectronica);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_INVOICE, reciboMessage);
     }
 
 }
