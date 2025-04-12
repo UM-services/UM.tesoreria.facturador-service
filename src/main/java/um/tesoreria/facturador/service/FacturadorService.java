@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import um.tesoreria.facturador.kotlin.tesoreria.core.dto.*;
 import um.tesoreria.facturador.kotlin.tesoreria.afip.dto.FacturacionDto;
-import um.tesoreria.facturador.model.dto.ReciboMessageDto;
-import um.tesoreria.facturador.service.queue.ReciboQueueService;
 
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -17,9 +15,6 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -31,22 +26,21 @@ public class FacturadorService {
     private final ChequeraPagoClient chequeraPagoClient;
     private final ChequeraCuotaClient chequeraCuotaClient;
     private final FacturacionAfipClient facturacionAfipClient;
-    private final ReciboQueueService reciboQueueService;
+    private final ReciboClient reciboClient;
 
     public FacturadorService(ComprobanteClient comprobanteClient,
                              ChequeraFacturacionElectronicaClient chequeraFacturacionElectronicaClient,
                              FacturacionElectronicaClient facturacionElectronicaClient,
                              ChequeraPagoClient chequeraPagoClient,
                              ChequeraCuotaClient chequeraCuotaClient,
-                             FacturacionAfipClient facturacionAfipClient,
-                             ReciboQueueService reciboQueueService) {
+                             FacturacionAfipClient facturacionAfipClient, ReciboClient reciboClient) {
         this.comprobanteClient = comprobanteClient;
         this.chequeraFacturacionElectronicaClient = chequeraFacturacionElectronicaClient;
         this.facturacionElectronicaClient = facturacionElectronicaClient;
         this.chequeraPagoClient = chequeraPagoClient;
         this.chequeraCuotaClient = chequeraCuotaClient;
         this.facturacionAfipClient = facturacionAfipClient;
-        this.reciboQueueService = reciboQueueService;
+        this.reciboClient = reciboClient;
     }
 
     public String facturaPendientes() {
@@ -86,28 +80,6 @@ public class FacturadorService {
         return "Facturado NO";
     }
 
-    public void sendRecibosPendientes() {
-        log.debug("Processing FacturadorService.sendPendientes");
-        for (var facturacionElectronica : facturacionElectronicaClient.find100Pendientes()) {
-            logFacturacionElectronica(facturacionElectronica);
-            var chequeraPago = chequeraPagoClient.findByChequeraPagoId(facturacionElectronica.getChequeraPagoId());
-            logChequeraPago(chequeraPago);
-            log.debug("FacturadorService.sendPendientes.enviandoRecibo");
-            reciboQueueService.sendReciboQueue(ReciboMessageDto
-                    .builder()
-                    .uuid(UUID.randomUUID())
-                    .facturacionElectronicaId(facturacionElectronica.getFacturacionElectronicaId())
-                    .chequeraPagoId(chequeraPago.getChequeraPagoId())
-                    .facultadId(chequeraPago.getFacultadId())
-                    .tipoChequeraId(chequeraPago.getTipoChequeraId())
-                    .chequeraSerieId(chequeraPago.getChequeraSerieId())
-                    .productoId(chequeraPago.getProductoId())
-                    .alternativaId(chequeraPago.getAlternativaId())
-                    .cuotaId(chequeraPago.getCuotaId())
-                    .build());
-        }
-    }
-
     public String sendOneByChequeraPagoId(Long chequeraPagoId) {
         log.debug("Processing FacturadorService.sendOneByChequeraPagoId");
         FacturacionElectronicaDto facturacionElectronica;
@@ -120,19 +92,7 @@ public class FacturadorService {
         }
         logFacturacionElectronica(facturacionElectronica);
         log.debug("FacturadorService.sendOneByChequeraPagoId.enviandoRecibo");
-        reciboQueueService.sendReciboQueue(ReciboMessageDto
-                .builder()
-                .uuid(UUID.randomUUID())
-                .facturacionElectronicaId(facturacionElectronica.getFacturacionElectronicaId())
-                .chequeraPagoId(chequeraPago.getChequeraPagoId())
-                .facultadId(chequeraPago.getFacultadId())
-                .tipoChequeraId(chequeraPago.getTipoChequeraId())
-                .chequeraSerieId(chequeraPago.getChequeraSerieId())
-                .productoId(chequeraPago.getProductoId())
-                .alternativaId(chequeraPago.getAlternativaId())
-                .cuotaId(chequeraPago.getCuotaId())
-                .build());
-        return "Envío solicitado";
+        return reciboClient.send(facturacionElectronica.getFacturacionElectronicaId());
     }
 
     public String sendOneByFacturacionElectronicaId(Long facturacionElectronicaId) {
@@ -148,21 +108,7 @@ public class FacturadorService {
             return "Facturación pendiente";
         }
         log.debug("FacturadorService.sendOneByFacturacionElectronicaId.enviandoRecibo");
-        var message = ReciboMessageDto
-                .builder()
-                .uuid(UUID.randomUUID())
-                .facturacionElectronicaId(facturacionElectronica.getFacturacionElectronicaId())
-                .chequeraPagoId(chequeraPago.getChequeraPagoId())
-                .facultadId(chequeraPago.getFacultadId())
-                .tipoChequeraId(chequeraPago.getTipoChequeraId())
-                .chequeraSerieId(chequeraPago.getChequeraSerieId())
-                .productoId(chequeraPago.getProductoId())
-                .alternativaId(chequeraPago.getAlternativaId())
-                .cuotaId(chequeraPago.getCuotaId())
-                .build();
-        logReciboMessage(message);
-        reciboQueueService.sendReciboQueue(message);
-        return "Envío de Recibo Solicitado";
+        return reciboClient.send(facturacionElectronicaId);
     }
 
     public boolean facturaCuota(ChequeraPagoDto chequeraPago) {
@@ -270,47 +216,6 @@ public class FacturadorService {
         return false;
     }
 
-    public void testInvoiceQueue(Long facturaElectronicaId) {
-        log.debug("Processing FacturadorService.testInvoiceQueue");
-        var facturacionElectronica = facturacionElectronicaClient.findByFacturacionElectronicaId(facturaElectronicaId);
-        var chequeraPago = chequeraPagoClient.findByChequeraPagoId(facturacionElectronica.getChequeraPagoId());
-        logFacturacionElectronica(facturacionElectronica);
-        reciboQueueService.sendReciboQueue(ReciboMessageDto
-                .builder()
-                .uuid(UUID.randomUUID())
-                .facturacionElectronicaId(facturacionElectronica.getFacturacionElectronicaId())
-                .chequeraPagoId(chequeraPago.getChequeraPagoId())
-                .facultadId(chequeraPago.getFacultadId())
-                .tipoChequeraId(chequeraPago.getTipoChequeraId())
-                .chequeraSerieId(chequeraPago.getChequeraSerieId())
-                .productoId(chequeraPago.getProductoId())
-                .alternativaId(chequeraPago.getAlternativaId())
-                .cuotaId(chequeraPago.getCuotaId())
-                .build());
-    }
-
-    public void testManyInvoiceQueue() {
-        log.debug("Processing FacturadorService.testManyInvoiceQueue");
-        List<Long> facturacionElectronicaIds = Arrays.asList(97305L, 135467L, 145274L, 160173L, 173471L, 191979L, 203757L, 215882L, 222657L, 266982L, 266984L, 266985L, 266987L);
-        for (var facturacionElectronicaId : facturacionElectronicaIds) {
-            var facturacionElectronica = facturacionElectronicaClient.findByFacturacionElectronicaId(facturacionElectronicaId);
-            var chequeraPago = chequeraPagoClient.findByChequeraPagoId(facturacionElectronica.getChequeraPagoId());
-            logFacturacionElectronica(facturacionElectronica);
-            reciboQueueService.sendReciboQueue(ReciboMessageDto
-                    .builder()
-                    .uuid(UUID.randomUUID())
-                    .facturacionElectronicaId(facturacionElectronica.getFacturacionElectronicaId())
-                    .chequeraPagoId(chequeraPago.getChequeraPagoId())
-                    .facultadId(chequeraPago.getFacultadId())
-                    .tipoChequeraId(chequeraPago.getTipoChequeraId())
-                    .chequeraSerieId(chequeraPago.getChequeraSerieId())
-                    .productoId(chequeraPago.getProductoId())
-                    .alternativaId(chequeraPago.getAlternativaId())
-                    .cuotaId(chequeraPago.getCuotaId())
-                    .build());
-        }
-    }
-
     private void logFacturacion(String apellido, String nombre, FacturacionDto facturacion) {
         try {
             log.info("Facturacion {} {}: {}", apellido, nombre, JsonMapper
@@ -373,19 +278,6 @@ public class FacturadorService {
                     .writeValueAsString(facturacionElectronica));
         } catch (JsonProcessingException e) {
             log.debug("Facturación Electronica jsonify error: {}", e.getMessage());
-        }
-    }
-
-    private void logReciboMessage(ReciboMessageDto message) {
-        try {
-            log.debug("ReciboMessage: {}", JsonMapper
-                    .builder()
-                    .findAndAddModules()
-                    .build()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(message));
-        } catch (JsonProcessingException e) {
-            log.debug("ReciboMessage jsonify error: {}", e.getMessage());
         }
     }
 
