@@ -17,11 +17,6 @@ eureka:
 spring:
   application:
     name: tesoreria-facturador-service
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-    username: admin
-    password: admin
 
 logging:
   level:

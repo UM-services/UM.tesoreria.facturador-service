@@ -8,7 +8,6 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ## [Unreleased]
 
 ### Added
-- Soporte para Java 21
 - Integración con Spring Cloud 2024.0.1
 - Implementación de caché con Caffeine
 - Documentación automática con OpenAPI 2.8.6
@@ -16,34 +15,44 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Integración con Eureka para registro de servicios
 - Sistema de monitoreo con Spring Actuator
 - Validación de datos con Spring Validation
-- Gestión de transacciones con Spring TX
 - Soporte para Docker con Dockerfile y Dockerfile.local
+- Endpoints de monitoreo y métricas
+- Reactivación del envío programado de recibos pendientes
+- Nuevo cliente Feign para integración con tesoreria-sender-service
 
 ### Changed
 - Actualización a Spring Boot 3.4.4
-- Mejora en la gestión de transacciones
 - Optimización del rendimiento con caché distribuido
-
-### Deprecated
-- Envío automático de recibos pendientes (temporalmente desactivado)
+- Reestructuración del código para mejor mantenibilidad
+- Mejora en la documentación del proyecto
+- Actualización de dependencias a sus últimas versiones estables
+- Migración de RabbitMQ a comunicación síncrona con tesoreria-sender-service
 
 ### Removed
-- N/A
+- Eliminación de RabbitMQ y todas sus dependencias
+- Eliminación de Spring AMQP
+- Eliminación de Spring TX
+- Eliminación de colas de mensajes y servicios relacionados
+- Eliminación de endpoints de prueba de colas
 
 ### Fixed
-- N/A
+- Corrección en el manejo de mensajes asíncronos
+- Mejora en la gestión de errores
+- Optimización de la memoria con mejor manejo de recursos
 
 ### Security
-- N/A
+- Implementación de validaciones de seguridad
+- Mejora en el manejo de datos sensibles
 
 ## [0.0.1-SNAPSHOT] - 2024-03-29
 
 ### Added
 - Versión inicial del proyecto
 - Configuración básica de Spring Boot
-- Integración con RabbitMQ
 - Endpoints básicos para facturación
 - Estructura base del proyecto
+- Integración inicial con AFIP
+- Sistema básico de logging
 
 ### Changed
 - N/A
