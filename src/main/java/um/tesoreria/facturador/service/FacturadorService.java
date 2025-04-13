@@ -111,6 +111,13 @@ public class FacturadorService {
         return reciboClient.send(facturacionElectronicaId);
     }
 
+    public void sendFacturasPendientes() {
+        log.debug("Processing FacturadorService.sendFacturasPendientes");
+        for (FacturacionElectronicaDto facturacionElectronica : facturacionElectronicaClient.find100Pendientes()) {
+            sendOneByFacturacionElectronicaId(facturacionElectronica.getFacturacionElectronicaId());
+        }
+    }
+
     public boolean facturaCuota(ChequeraPagoDto chequeraPago) {
         log.debug("Processing FacturadorService.facturaCuota");
 

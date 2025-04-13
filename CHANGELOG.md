@@ -17,8 +17,9 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Validación de datos con Spring Validation
 - Soporte para Docker con Dockerfile y Dockerfile.local
 - Endpoints de monitoreo y métricas
-- Reactivación del envío programado de recibos pendientes
 - Nuevo cliente Feign para integración con tesoreria-sender-service
+- Implementación de envío programado de facturas pendientes cada hora
+- Procesamiento automático de lotes de hasta 100 facturas
 
 ### Changed
 - Actualización a Spring Boot 3.4.4
@@ -27,6 +28,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Mejora en la documentación del proyecto
 - Actualización de dependencias a sus últimas versiones estables
 - Migración de RabbitMQ a comunicación síncrona con tesoreria-sender-service
+- Mejora en el sistema de procesamiento de facturas pendientes
 
 ### Removed
 - Eliminación de RabbitMQ y todas sus dependencias
@@ -34,6 +36,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Eliminación de Spring TX
 - Eliminación de colas de mensajes y servicios relacionados
 - Eliminación de endpoints de prueba de colas
+- Eliminación del endpoint manual de envío de recibos pendientes
 
 ### Fixed
 - Corrección en el manejo de mensajes asíncronos
