@@ -42,4 +42,10 @@ public class FacturadorController {
         return new ResponseEntity<>(service.sendOneByFacturacionElectronicaId(facturacionElectronicaId), HttpStatus.OK);
     }
 
+    @Scheduled(cron = "0 0 * * * *")
+    public ResponseEntity<Void> sendFacturasPendientesScheduled() {
+        service.sendFacturasPendientes();
+        return ResponseEntity.ok().build();
+    }
+
 }
