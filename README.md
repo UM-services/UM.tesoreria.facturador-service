@@ -35,8 +35,8 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 - Procesamiento de pagos y recibos
 - Gestión de transacciones y estados de facturación
 - Caché de datos para optimización de rendimiento
-- Trazabilidad de mensajes con UUID
-- Envío programado de recibos pendientes
+- Comunicación síncrona con tesoreria-sender-service
+- Envío programado de facturas pendientes
 
 ## 🏗️ Arquitectura
 
@@ -66,7 +66,7 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 - SpringDoc OpenAPI 2.8.6
 - Spring AOP
 - Spring Validation
-- Spring TX
+- Feign Client para comunicación síncrona
 
 ## 📚 Documentación
 
@@ -88,9 +88,8 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 - Validación de datos con Spring Validation
 - Documentación automática con OpenAPI
 - Soporte para Kotlin
-- Gestión de transacciones con Spring TX
 - Monitoreo con Spring Actuator
-- Trazabilidad de mensajes con UUID
+- Comunicación síncrona con tesoreria-sender-service
 - Envío programado de facturas pendientes cada hora
 - Procesamiento automático de lotes de hasta 100 facturas
 
@@ -134,8 +133,8 @@ El servicio expone endpoints de monitoreo a través de Spring Actuator:
 ## 📝 Notas
 - El envío automático de facturas pendientes se ejecuta cada hora (cron: "0 0 * * * *")
 - Se procesan hasta 100 facturas pendientes por ejecución
+- La comunicación con tesoreria-sender-service es síncrona
 - Se recomienda revisar el CHANGELOG.md para conocer las últimas actualizaciones
-- El servicio utiliza UUID para la trazabilidad de mensajes
 
 ## ✍️ Autor
 - Universidad de Mendoza - Ing. Daniel Quinteros
