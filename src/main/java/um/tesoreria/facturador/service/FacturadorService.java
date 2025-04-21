@@ -114,6 +114,8 @@ public class FacturadorService {
     public void sendFacturasPendientes() {
         log.debug("Processing FacturadorService.sendFacturasPendientes");
         for (FacturacionElectronicaDto facturacionElectronica : facturacionElectronicaClient.find100Pendientes()) {
+            log.info("Sending from FacturadorService.sendFacturasPendientes");
+            logFacturacionElectronica(facturacionElectronica);
             sendOneByFacturacionElectronicaId(facturacionElectronica.getFacturacionElectronicaId());
         }
     }
@@ -277,7 +279,7 @@ public class FacturadorService {
 
     private void logFacturacionElectronica(FacturacionElectronicaDto facturacionElectronica) {
         try {
-            log.debug("Facturación Electronica: {}", JsonMapper
+            log.info("Facturación Electronica: {}", JsonMapper
                     .builder()
                     .findAndAddModules()
                     .build()

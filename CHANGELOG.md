@@ -37,15 +37,19 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Eliminación de colas de mensajes y servicios relacionados
 - Eliminación de endpoints de prueba de colas
 - Eliminación del endpoint manual de envío de recibos pendientes
+- Eliminación de la configuración de RabbitMQ
+- Eliminación de los servicios de cola
 
 ### Fixed
 - Corrección en el manejo de mensajes asíncronos
 - Mejora en la gestión de errores
 - Optimización de la memoria con mejor manejo de recursos
+- Mejora en la comunicación entre servicios
 
 ### Security
 - Implementación de validaciones de seguridad
 - Mejora en el manejo de datos sensibles
+- Mejora en la seguridad de la comunicación entre servicios
 
 ## [0.0.1-SNAPSHOT] - 2024-03-29
 
