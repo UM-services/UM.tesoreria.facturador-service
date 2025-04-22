@@ -18,7 +18,7 @@ public interface FacturacionElectronicaClient {
     List<FacturacionElectronicaDto> findAllByChequera(@PathVariable Integer facultadId, @PathVariable Integer tipoChequeraId, @PathVariable Long chequeraSerieId) ;
 
     @GetMapping("/pendientes")
-    List<FacturacionElectronicaDto> find100Pendientes();
+    List<FacturacionElectronicaDto> find3Pendientes();
 
     @GetMapping("/{facturacionElectronicaId}")
     FacturacionElectronicaDto findByFacturacionElectronicaId(@PathVariable Long facturacionElectronicaId) ;

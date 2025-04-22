@@ -113,7 +113,7 @@ public class FacturadorService {
 
     public void sendFacturasPendientes() {
         log.debug("Processing FacturadorService.sendFacturasPendientes");
-        for (FacturacionElectronicaDto facturacionElectronica : facturacionElectronicaClient.find100Pendientes()) {
+        for (FacturacionElectronicaDto facturacionElectronica : facturacionElectronicaClient.find3Pendientes()) {
             log.info("Sending from FacturadorService.sendFacturasPendientes");
             logFacturacionElectronica(facturacionElectronica);
             sendOneByFacturacionElectronicaId(facturacionElectronica.getFacturacionElectronicaId());
