@@ -8,10 +8,10 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ## [Unreleased]
 
 ### Added
-- Integración con Spring Cloud 2024.0.1
+- Integración con Spring Cloud 2025.0.0
 - Implementación de caché con Caffeine
-- Documentación automática con OpenAPI 2.8.6
-- Soporte para Kotlin 2.1.20
+- Documentación automática con OpenAPI 2.8.8
+- Soporte para Kotlin 2.1.21
 - Integración con Eureka para registro de servicios
 - Sistema de monitoreo con Spring Actuator
 - Validación de datos con Spring Validation
@@ -22,31 +22,49 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Procesamiento automático de lotes de hasta 100 facturas
 
 ### Changed
+- Optimización del procesamiento de facturas pendientes
+  - Reducción del lote de procesamiento
+  - Ajuste de la frecuencia de procesamiento
+  - Mejora en el logging
+- Migración de RabbitMQ a comunicación síncrona
+  - Implementación de cliente Feign para comunicación directa
+  - Actualización de servicios para comunicación síncrona
+  - Mejora en el manejo de respuestas
+- Actualización de dependencias
+  - Spring Boot a 3.5.0
+  - Spring Cloud a 2025.0.0
+  - Kotlin a 2.1.21
+  - OpenAPI a 2.8.8
 - Actualización a Spring Boot 3.4.4
 - Optimización del rendimiento con caché distribuido
 - Reestructuración del código para mejor mantenibilidad
 - Mejora en la documentación del proyecto
 - Actualización de dependencias a sus últimas versiones estables
-- Migración de RabbitMQ a comunicación síncrona con tesoreria-sender-service
-- Mejora en el sistema de procesamiento de facturas pendientes
 
 ### Removed
-- Eliminación de RabbitMQ y todas sus dependencias
-- Eliminación de Spring AMQP
-- Eliminación de Spring TX
-- Eliminación de colas de mensajes y servicios relacionados
+- Eliminación de la configuración de RabbitMQ (RabbitMQConfig.java)
+- Eliminación de los servicios de cola (ReciboQueueService.java)
+- Eliminación de la comunicación asíncrona
+- Eliminación de dependencias de RabbitMQ y Spring AMQP
 - Eliminación de endpoints de prueba de colas
 - Eliminación del endpoint manual de envío de recibos pendientes
 - Eliminación de la configuración de RabbitMQ
 - Eliminación de los servicios de cola
 
 ### Fixed
+- Mejora en la gestión de transacciones
+- Optimización del proceso de facturación
+- Mejora en el sistema de logging
+- Corrección en el manejo de errores en la comunicación síncrona
 - Corrección en el manejo de mensajes asíncronos
 - Mejora en la gestión de errores
 - Optimización de la memoria con mejor manejo de recursos
 - Mejora en la comunicación entre servicios
 
 ### Security
+- Mejora en la validación de datos
+- Actualización de dependencias de seguridad
+- Implementación de validaciones en la comunicación entre servicios
 - Implementación de validaciones de seguridad
 - Mejora en el manejo de datos sensibles
 - Mejora en la seguridad de la comunicación entre servicios

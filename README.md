@@ -4,9 +4,9 @@
 
 #### Lenguajes y Plataformas
 ![Java](https://img.shields.io/badge/Java-21-red?style=for-the-badge&logo=openjdk)
-![Kotlin](https://img.shields.io/badge/Kotlin-2.1.20-purple?style=for-the-badge&logo=kotlin)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.4-green?style=for-the-badge&logo=spring-boot)
-![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2024.0.1-green?style=for-the-badge&logo=spring-cloud)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.1.21-purple?style=for-the-badge&logo=kotlin)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.0-green?style=for-the-badge&logo=spring-boot)
+![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.0.0-green?style=for-the-badge&logo=spring-cloud)
 
 #### Bases de Datos y Caché
 ![Caffeine](https://img.shields.io/badge/Caffeine_Cache-3.1.8-blue?style=for-the-badge)
@@ -14,12 +14,14 @@
 #### Herramientas de Desarrollo
 ![Maven](https://img.shields.io/badge/Maven-3.9+-blue?style=for-the-badge&logo=apache-maven)
 ![Docker](https://img.shields.io/badge/Docker-24.0+-blue?style=for-the-badge&logo=docker)
-![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.6-green?style=for-the-badge&logo=openapi-initiative)
 
 #### Frameworks y Librerías
 ![Spring WebFlux](https://img.shields.io/badge/Spring_WebFlux-3.4.4-green?style=for-the-badge&logo=spring)
 ![Spring Actuator](https://img.shields.io/badge/Spring_Actuator-3.4.4-green?style=for-the-badge&logo=spring)
 ![Lombok](https://img.shields.io/badge/Lombok-1.18.30-pink?style=for-the-badge)
+
+#### Documentación y API
+![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.8-blue?style=for-the-badge&logo=openapi)
 
 ### Estado del Pipeline
 [![UM.tesoreria.facturador-service CI](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml/badge.svg)](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml)
@@ -57,13 +59,13 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 
 ### Backend
 - Java 21
-- Spring Boot 3.4.4
-- Spring Cloud 2024.0.1
-- Kotlin 2.1.20
+- Spring Boot 3.5.0
+- Spring Cloud 2025.0.0
+- Kotlin 2.1.21
 - Maven 3.9+
 
 ### Herramientas y Utilidades
-- SpringDoc OpenAPI 2.8.6
+- SpringDoc OpenAPI 2.8.8
 - Spring AOP
 - Spring Validation
 - Feign Client para comunicación síncrona
@@ -138,3 +140,40 @@ El servicio expone endpoints de monitoreo a través de Spring Actuator:
 
 ## ✍️ Autor
 - Universidad de Mendoza - Ing. Daniel Quinteros
+
+### Características
+- Comunicación síncrona con tesoreria-sender-service
+- Procesamiento optimizado de facturas pendientes
+- Sistema de caché con Caffeine
+- Documentación automática con OpenAPI
+- Integración con Eureka para registro de servicios
+- Sistema de monitoreo con Spring Actuator
+- Validación de datos con Spring Validation
+
+### Notas
+- El servicio procesa facturas pendientes de forma programada
+- Se utiliza comunicación síncrona directa con tesoreria-sender-service
+- El sistema implementa un procesamiento optimizado por lotes
+- Se mantiene un sistema de logging detallado para seguimiento de operaciones
+- Se utiliza caché para optimizar el rendimiento
+- La documentación de la API está disponible a través de OpenAPI
+
+### Endpoints
+- `/facturador/recibo`: Endpoint para el procesamiento de recibos
+- `/facturador/recibo/pendientes`: Endpoint para consultar recibos pendientes
+- `/actuator`: Endpoints de monitoreo y métricas
+- `/v3/api-docs`: Documentación OpenAPI
+- `/swagger-ui.html`: Interfaz de Swagger UI
+
+### Dependencias Principales
+- Spring Boot 3.5.0
+- Spring Cloud 2025.0.0
+- Spring WebFlux
+- Spring Cloud OpenFeign
+- Spring Boot Actuator
+- Spring Boot Validation
+- Spring Boot Cache
+- Caffeine Cache
+- SpringDoc OpenAPI 2.8.8
+- Kotlin 2.1.21
+- Lombok
