@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant C as Cliente API
+    participant FC as FacturadorController
+    participant FS as FacturadorService
+    participant CCC as ChequeraCuotaClient
+    participant FEC as FacturacionElectronicaClient
+    participant FAC as FacturacionAfipClient
+
+    C->>+FC: POST /facturar (datos)
+    FC->>+FS: facturar(datos)
+    FS->>+CCC: getByChequeraCuotaId(...)
+    CCC-->>-FS: Retorna ChequeraCuotaDto
+    FS->>+FEC: getByChequeraId(...)
+    FEC-->>-FS: Retorna FacturacionElectronicaDto
+    FS->>+FAC: generarComprobante(factura)
+    FAC-->>-FS: Retorna ComprobanteAfipDto (con CAE)
+    FS-->>-FC: Retorna Comprobante
+    FC-->>-C: Retorna 200 OK (Comprobante)
