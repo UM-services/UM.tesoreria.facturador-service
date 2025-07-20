@@ -1,12 +1,6 @@
-<?xml version	<groupId>ar.edu</groupId>
-	<artifactId>um.facturador-service</artifactId>
-	<version>0.1.0</version>
-	<n>UM.tesoreria.facturador-service</n>
-	<description>Spring Boot Microservice Facturador</description>sion>0.1.0</version>
-	<n>UM.tesoreria.facturador-service</n>
-	<description>Spring Boot Microservice Facturador</description>.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
