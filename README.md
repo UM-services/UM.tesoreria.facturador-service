@@ -3,9 +3,9 @@
 ### Tecnologías
 
 #### Lenguajes y Plataformas
-![Java](https://img.shields.io/badge/Java-21-red?style=for-the-badge&logo=openjdk)
-![Kotlin](https://img.shields.io/badge/Kotlin-2.1.21-purple?style=for-the-badge&logo=kotlin)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.0-green?style=for-the-badge&logo=spring-boot)
+![Java](https://img.shields.io/badge/Java-24-red?style=for-the-badge&logo=openjdk)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-purple?style=for-the-badge&logo=kotlin)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.3-green?style=for-the-badge&logo=spring-boot)
 ![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.0.0-green?style=for-the-badge&logo=spring-cloud)
 
 #### Bases de Datos y Caché
@@ -14,6 +14,7 @@
 #### Herramientas de Desarrollo
 ![Maven](https://img.shields.io/badge/Maven-3.9+-blue?style=for-the-badge&logo=apache-maven)
 ![Docker](https://img.shields.io/badge/Docker-24.0+-blue?style=for-the-badge&logo=docker)
+![SonarCloud](https://img.shields.io/badge/SonarCloud-latest-blue?style=for-the-badge&logo=sonarcloud)
 
 #### Frameworks y Librerías
 ![Spring WebFlux](https://img.shields.io/badge/Spring_WebFlux-3.4.4-green?style=for-the-badge&logo=spring)
@@ -21,10 +22,12 @@
 ![Lombok](https://img.shields.io/badge/Lombok-1.18.30-pink?style=for-the-badge)
 
 #### Documentación y API
-![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.8-blue?style=for-the-badge&logo=openapi)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.9-blue?style=for-the-badge&logo=openapi)
 
 ### Estado del Pipeline
 [![UM.tesoreria.facturador-service CI](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml/badge.svg)](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=UM-services_UM.tesoreria.facturador-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=UM-services_UM.tesoreria.facturador-service)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=UM-services_UM.tesoreria.facturador-service&metric=coverage)](https://sonarcloud.io/summary/new_code?id=UM-services_UM.tesoreria.facturador-service)
 
 ### Estado de la Documentación
 [![GitHub Pages](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/pages/pages-build-deployment)
@@ -58,17 +61,19 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 ## 🚀 Stack Tecnológico
 
 ### Backend
-- Java 21
-- Spring Boot 3.5.0
+- Java 24
+- Spring Boot 3.5.3
 - Spring Cloud 2025.0.0
-- Kotlin 2.1.21
+- Kotlin 2.2.0
 - Maven 3.9+
 
 ### Herramientas y Utilidades
-- SpringDoc OpenAPI 2.8.8
+- SpringDoc OpenAPI 2.8.9
 - Spring AOP
 - Spring Validation
 - Feign Client para comunicación síncrona
+- SonarCloud para análisis de código
+- JaCoCo para cobertura de pruebas
 
 ## 📚 Documentación
 
@@ -98,6 +103,45 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 ## 🛠️ Desarrollo
 
 ### Requisitos
+- JDK 24
+- Docker 24.0+
+- Maven 3.9+
+
+### Configuración del Entorno Local
+
+1. **Clonar el Repositorio**
+```bash
+git clone https://github.com/UM-services/UM.tesoreria.facturador-service.git
+cd UM.tesoreria.facturador-service
+```
+
+2. **Compilar el Proyecto**
+```bash
+mvn clean package
+```
+
+3. **Ejecutar con Docker**
+```bash
+docker build -t um-tesoreria-facturador-service .
+docker run -p 8080:8080 um-tesoreria-facturador-service
+```
+
+### Herramientas de Calidad
+
+El proyecto utiliza varias herramientas para mantener la calidad del código:
+
+1. **SonarCloud**
+   - Análisis automático en cada PR
+   - Dashboard público en [SonarCloud](https://sonarcloud.io/project/overview?id=UM-services_UM.tesoreria.facturador-service)
+
+2. **JaCoCo**
+   - Generación de informes de cobertura
+   - Integración con SonarCloud
+
+3. **GitHub Actions**
+   - CI/CD automatizado
+   - Generación de documentación
+   - Análisis de calidad
 - JDK 21
 - Maven 3.9+
 - Docker y Docker Compose

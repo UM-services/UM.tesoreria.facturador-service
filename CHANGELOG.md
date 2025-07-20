@@ -5,17 +5,23 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.0] - 2025-07-20
 
 ### Added
+- Soporte para Java 24
+- Integración con SonarCloud y análisis de código
+- Análisis de cobertura con JaCoCo
+- Método `jsonify()` en DTOs para logging estructurado
+- Nuevo sistema de generación de documentación con Mermaid
+- Integración mejorada con GitHub Pages
+- Nueva configuración de Docker multi-stage build
 - Integración con Spring Cloud 2025.0.0
 - Implementación de caché con Caffeine
-- Documentación automática con OpenAPI 2.8.8
-- Soporte para Kotlin 2.1.21
+- Documentación automática con OpenAPI 2.8.9
+- Soporte para Kotlin 2.2.0
 - Integración con Eureka para registro de servicios
 - Sistema de monitoreo con Spring Actuator
 - Validación de datos con Spring Validation
-- Soporte para Docker con Dockerfile y Dockerfile.local
 - Endpoints de monitoreo y métricas
 - Nuevo cliente Feign para integración con tesoreria-sender-service
 - Implementación de envío programado de facturas pendientes cada hora

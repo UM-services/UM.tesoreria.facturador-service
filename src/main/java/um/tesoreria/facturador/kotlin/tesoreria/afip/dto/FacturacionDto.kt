@@ -1,6 +1,8 @@
 package um.tesoreria.facturador.kotlin.tesoreria.afip.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.json.JsonMapper
 import java.math.BigDecimal
 
 data class FacturacionDto(
@@ -44,6 +46,20 @@ data class FacturacionDto(
     var asociadoFechaComprobante: String? = null
 
 ) {
+
+    fun jsonify(): String {
+        try {
+            return JsonMapper
+                .builder()
+                .findAndAddModules()
+                .build()
+                .writerWithDefaultPrettyPrinter()
+                .writeValueAsString(this)
+        } catch (e: JsonProcessingException) {
+            return "jsonify error ${e.message}"
+        }
+    }
+
     data class Builder(
         var tipoDocumento: Int = 0,
         var documento: String = "0",

@@ -1,0 +1,38 @@
+erDiagram
+    FACTURACION_ELECTRONICA {
+        int id
+        string cae
+        date fechaVencimientoCae
+        string numeroComprobante
+    }
+
+    CHEQUERA_FACTURACION {
+        int id
+        int chequeraId
+        int facturacionElectronicaId
+    }
+
+    CHEQUERA_CUOTA {
+        int id
+        int chequeraId
+        decimal importe
+        date fechaVencimiento
+    }
+
+    COMPROBANTE {
+        int id
+        string tipoComprobante
+        string numero
+        decimal importeTotal
+    }
+
+    PERSONA {
+        int personaId
+        string nombre
+        string cuit
+    }
+
+    FACTURACION_ELECTRONICA ||--o{ CHEQUERA_FACTURACION : "tiene"
+    CHEQUERA_CUOTA ||--o{ CHEQUERA_FACTURACION : "es parte de"
+    COMPROBANTE }o--|| FACTURACION_ELECTRONICA : "genera"
+    PERSONA }o--|| CHEQUERA_CUOTA : "asociada a"
