@@ -1,3 +1,9 @@
+spring:
+  application:
+    name: facturador-service
+  cloud:
+    consul:
+      enabled: false
 eureka:
   client:
     enabled: false
