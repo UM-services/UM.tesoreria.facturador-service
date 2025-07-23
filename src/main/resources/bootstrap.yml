@@ -1,22 +1,24 @@
 app:
   port: ${APP_PORT:8097}
   logging: DEBUG
+  testing: false
+  consul:
+    host: consul-service
+    port: 8500
 
 server:
   port: ${app.port}
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://eureka:@eureka-service:8761/eureka
-
 spring:
   application:
     name: tesoreria-facturador-service
+  cloud:
+    consul:
+      host: ${app.consul.host}
+      port: ${app.consul.port}
+      discovery:
+        prefer-ip-address: true
+        tags: tesoreria,facturador
 
 logging:
   level:
@@ -24,3 +26,9 @@ logging:
     web: ${app.logging}
     org:
       springframework.cloud.config: ${app.logging}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,scheduledtasks,env

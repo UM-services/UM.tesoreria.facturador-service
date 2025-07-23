@@ -1,5 +1,5 @@
 
-name: UM.haberes.core-service Build JVM Image
+name: UM.tesoreria.facturador-service Build JVM Image
 
 on:
   push:
@@ -41,7 +41,7 @@ jobs:
           # This token is stored in GitHub Secrets.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=UM-services_UM.haberes.core-service
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=UM-services_UM.tesoreria.facturador-service
 
   # --- Job 1: Build the standard JVM image ---
   build-image:
