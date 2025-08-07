@@ -5,7 +5,7 @@
 #### Lenguajes y Plataformas
 ![Java](https://img.shields.io/badge/Java-24-red?style=for-the-badge&logo=openjdk)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-purple?style=for-the-badge&logo=kotlin)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.3-green?style=for-the-badge&logo=spring-boot)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.4-green?style=for-the-badge&logo=spring-boot)
 ![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.0.0-green?style=for-the-badge&logo=spring-cloud)
 
 #### Bases de Datos y Caché

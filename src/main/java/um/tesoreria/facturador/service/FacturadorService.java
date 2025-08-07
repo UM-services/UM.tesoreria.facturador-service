@@ -183,6 +183,7 @@ public class FacturadorService {
                 .puntoVenta(puntoVenta)
                 .total(importePagado.setScale(2, RoundingMode.HALF_UP))
                 .neto(importePagado.setScale(2, RoundingMode.HALF_UP))
+                .idCondicionIva(5)
                 .build();
 
         log.info("Afip Test -> {}", facturacionAfipClient.test());
