@@ -1,9 +1,22 @@
+
 # Changelog
 
 Todos los cambios notables en este proyecto serán documentados en este archivo.
 
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.2.0] - 2025-08-07
+
+### Added
+- feat: Se agrega el campo `idCondicionIva` en el DTO de facturación y su propagación en el builder y en el servicio principal para mayor compatibilidad con AFIP.
+
+### Changed
+- chore: Actualización de Spring Boot a 3.5.4.
+- chore: Dockerfile ahora ajusta permisos de la aplicación para el usuario no privilegiado.
+
+### Fuente
+- Basado en análisis de código (`git diff HEAD`), historial de commits y actualización de dependencias en `pom.xml`.
 
 ## [0.1.0] - 2025-07-20
 
