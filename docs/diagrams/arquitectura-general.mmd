@@ -1,25 +1,21 @@
 graph TD
-    subgraph "Sistema Externo"
-        afip_ws[("AFIP Web Service")]
-        core_api[("Tesoreria Core API")]
+    subgraph Sistema_Externo
+        afip_ws["AFIP Web Service"]
+        core_api["Tesoreria Core API"]
     end
 
-    subgraph "UM Tesorería Facturador Service"
-        style "UM Tesorería Facturador Service" fill:#f9f,stroke:#333,stroke-width:2px
-
-        subgraph "Aplicación Spring Boot"
-            controller[FacturadorController]
-            service[FacturadorService]
-            clients[Clients]
-        end
-
-        controller --> service
-        service --> clients
+    subgraph UM_Tesoreria_Facturador_Service
+        controller[FacturadorController]
+        service[FacturadorService]
+        clients[Clients]
     end
 
+    controller --> service
+    service --> clients
     clients --> afip_ws
     clients --> core_api
 
+    style UM_Tesoreria_Facturador_Service fill:#f9f,stroke:#333,stroke-width:2px
     style controller fill:#bbf,stroke:#333,stroke-width:2px
     style service fill:#bbf,stroke:#333,stroke-width:2px
     style clients fill:#bbf,stroke:#333,stroke-width:2px

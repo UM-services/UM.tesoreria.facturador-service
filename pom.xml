@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>ar.edu</groupId>
 	<artifactId>um.facturador-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.3.0</version>
 	<name>UM.tesoreria.facturador-service</name>
 	<description>Spring Boot Microservice Facturador</description>
 	<properties>
