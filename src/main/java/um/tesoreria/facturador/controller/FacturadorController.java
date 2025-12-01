@@ -1,18 +1,16 @@
 package um.tesoreria.facturador.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import um.tesoreria.facturador.service.FacturadorService;
 
 @RestController
 @RequestMapping("/api/tesoreria/facturador")
+@RequiredArgsConstructor
 public class FacturadorController {
 
     private final FacturadorService service;
-
-    public FacturadorController(FacturadorService service) {
-        this.service = service;
-    }
 
     @GetMapping("/facturaPendientes")
     public ResponseEntity<String> facturaPendientes() {

@@ -19,9 +19,9 @@ public class FacturadorScheduledService {
         service.facturaPendientes();
     }
 
-    @Scheduled(cron = "0 * * * * *")
-    public void sendFacturasPendientesScheduled() {
-        service.sendFacturasPendientes();
-    }
+//    @Scheduled(cron = "0 * * * * *")
+//    public void sendFacturasPendientesScheduled() {
+//        service.sendFacturasPendientes();
+//    }
 
 }
