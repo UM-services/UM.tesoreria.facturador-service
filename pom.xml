@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.0</version>
+		<version>3.5.8</version>
 		<relativePath/>
 		<!-- lookup parent from repository -->
 	</parent>
@@ -16,7 +16,7 @@
 	<description>Spring Boot Microservice Facturador</description>
 	<properties>
 		<java.version>24</java.version>
-		<spring-cloud.version>2025.1.0</spring-cloud.version>
+		<spring-cloud.version>2025.0.0</spring-cloud.version>
 		<kotlin.version>2.2.21</kotlin.version>
 		<sonar.organization>um-services</sonar.organization>
 		<sonar.projectKey>UM-services_UM.tesoreria.facturador-service</sonar.projectKey>
