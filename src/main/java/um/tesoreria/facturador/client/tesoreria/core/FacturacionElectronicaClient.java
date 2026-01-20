@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "tesoreria-core-service/api/tesoreria/core/facturacionElectronica")
+@FeignClient(name = "tesoreria-core-service", contextId = "facturacionElectronicaClient", url = "/api/tesoreria/core/facturacionElectronica")
 public interface FacturacionElectronicaClient {
 
     @GetMapping("/chequera/{facultadId}/{tipoChequeraId}/{chequeraSerieId}")
