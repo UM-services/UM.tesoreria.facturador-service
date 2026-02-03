@@ -3,10 +3,10 @@
 ### Tecnologías
 
 #### Lenguajes y Plataformas
-![Java](https://img.shields.io/badge/Java-24-red?style=for-the-badge&logo=openjdk)
-![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-purple?style=for-the-badge&logo=kotlin)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.4-green?style=for-the-badge&logo=spring-boot)
-![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.0.0-green?style=for-the-badge&logo=spring-cloud)
+![Java](https://img.shields.io/badge/Java-25-red?style=for-the-badge&logo=openjdk)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.3.0-purple?style=for-the-badge&logo=kotlin)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.2-green?style=for-the-badge&logo=spring-boot)
+![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.1.0-green?style=for-the-badge&logo=spring-cloud)
 
 #### Bases de Datos y Caché
 ![Caffeine](https://img.shields.io/badge/Caffeine_Cache-3.1.8-blue?style=for-the-badge)
@@ -22,7 +22,7 @@
 ![Lombok](https://img.shields.io/badge/Lombok-1.18.30-pink?style=for-the-badge)
 
 #### Documentación y API
-![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.9-blue?style=for-the-badge&logo=openapi)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.1-blue?style=for-the-badge&logo=openapi)
 
 ### Estado del Pipeline
 [![UM.tesoreria.facturador-service CI](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml/badge.svg)](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml)
@@ -61,10 +61,10 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 ## 🚀 Stack Tecnológico
 
 ### Backend
-- Java 24
-- Spring Boot 3.5.3
-- Spring Cloud 2025.0.0
-- Kotlin 2.2.0
+- Java 25
+- Spring Boot 4.0.2
+- Spring Cloud 2025.1.0
+- Kotlin 2.3.0
 - Maven 3.9+
 
 ### Herramientas y Utilidades
@@ -103,7 +103,7 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 ## 🛠️ Desarrollo
 
 ### Requisitos
-- JDK 24
+- JDK 25
 - Docker 24.0+
 - Maven 3.9+
 
@@ -210,14 +210,14 @@ El servicio expone endpoints de monitoreo a través de Spring Actuator:
 - `/swagger-ui.html`: Interfaz de Swagger UI
 
 ### Dependencias Principales
-- Spring Boot 3.5.0
-- Spring Cloud 2025.0.0
+- Spring Boot 4.0.2
+- Spring Cloud 2025.1.0
 - Spring WebFlux
 - Spring Cloud OpenFeign
 - Spring Boot Actuator
 - Spring Boot Validation
 - Spring Boot Cache
 - Caffeine Cache
-- SpringDoc OpenAPI 2.8.8
-- Kotlin 2.1.21
+- SpringDoc OpenAPI 3.0.1
+- Kotlin 2.3.0
 - Lombok

@@ -7,6 +7,14 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2026-02-03
+
+### Changed
+- chore: Actualización de Spring Boot parent de 4.0.1 a 4.0.2 para incorporar correcciones de seguridad y bug fixes.
+
+### Fuente
+- Basado en análisis de cambios locales (`git diff HEAD`) y actualización de dependencias en `pom.xml`.
+
 ## [0.3.0] - 2025-08-10
 
 ### Changed
