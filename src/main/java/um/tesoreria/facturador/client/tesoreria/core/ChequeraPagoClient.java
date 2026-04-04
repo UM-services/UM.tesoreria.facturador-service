@@ -1,6 +1,6 @@
 package um.tesoreria.facturador.client.tesoreria.core;
 
-import um.tesoreria.facturador.kotlin.tesoreria.core.dto.ChequeraPagoDto;
+import um.tesoreria.facturador.model.dto.ChequeraPagoDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;

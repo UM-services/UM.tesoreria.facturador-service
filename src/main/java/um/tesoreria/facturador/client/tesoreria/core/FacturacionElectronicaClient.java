@@ -1,8 +1,6 @@
 package um.tesoreria.facturador.client.tesoreria.core;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import um.tesoreria.facturador.kotlin.tesoreria.core.dto.FacturacionElectronicaDto;
+import um.tesoreria.facturador.model.dto.FacturacionElectronicaDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
