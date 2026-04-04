@@ -4,8 +4,7 @@
 
 #### Lenguajes y Plataformas
 ![Java](https://img.shields.io/badge/Java-25-red?style=for-the-badge&logo=openjdk)
-![Kotlin](https://img.shields.io/badge/Kotlin-2.3.0-purple?style=for-the-badge&logo=kotlin)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.2-green?style=for-the-badge&logo=spring-boot)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.5-green?style=for-the-badge&logo=spring-boot)
 ![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.1.0-green?style=for-the-badge&logo=spring-cloud)
 
 #### Bases de Datos y Caché
@@ -17,12 +16,12 @@
 ![SonarCloud](https://img.shields.io/badge/SonarCloud-latest-blue?style=for-the-badge&logo=sonarcloud)
 
 #### Frameworks y Librerías
-![Spring WebFlux](https://img.shields.io/badge/Spring_WebFlux-3.4.4-green?style=for-the-badge&logo=spring)
-![Spring Actuator](https://img.shields.io/badge/Spring_Actuator-3.4.4-green?style=for-the-badge&logo=spring)
+![Spring WebFlux](https://img.shields.io/badge/Spring_WebFlux-4.0.x-green?style=for-the-badge&logo=spring)
+![Spring Actuator](https://img.shields.io/badge/Spring_Actuator-4.0.x-green?style=for-the-badge&logo=spring)
 ![Lombok](https://img.shields.io/badge/Lombok-1.18.30-pink?style=for-the-badge)
 
 #### Documentación y API
-![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.1-blue?style=for-the-badge&logo=openapi)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.2-blue?style=for-the-badge&logo=openapi)
 
 ### Estado del Pipeline
 [![UM.tesoreria.facturador-service CI](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml/badge.svg)](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml)
@@ -62,13 +61,12 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 
 ### Backend
 - Java 25
-- Spring Boot 4.0.2
+- Spring Boot 4.0.5
 - Spring Cloud 2025.1.0
-- Kotlin 2.3.0
 - Maven 3.9+
 
 ### Herramientas y Utilidades
-- SpringDoc OpenAPI 2.8.9
+- SpringDoc OpenAPI 3.0.2
 - Spring AOP
 - Spring Validation
 - Feign Client para comunicación síncrona
@@ -94,7 +92,6 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 - Caché distribuido con Caffeine
 - Validación de datos con Spring Validation
 - Documentación automática con OpenAPI
-- Soporte para Kotlin
 - Monitoreo con Spring Actuator
 - Comunicación síncrona con tesoreria-sender-service
 - Envío programado de facturas pendientes cada hora
@@ -210,7 +207,7 @@ El servicio expone endpoints de monitoreo a través de Spring Actuator:
 - `/swagger-ui.html`: Interfaz de Swagger UI
 
 ### Dependencias Principales
-- Spring Boot 4.0.2
+- Spring Boot 4.0.5
 - Spring Cloud 2025.1.0
 - Spring WebFlux
 - Spring Cloud OpenFeign
@@ -218,6 +215,5 @@ El servicio expone endpoints de monitoreo a través de Spring Actuator:
 - Spring Boot Validation
 - Spring Boot Cache
 - Caffeine Cache
-- SpringDoc OpenAPI 3.0.1
-- Kotlin 2.3.0
+- SpringDoc OpenAPI 3.0.2
 - Lombok

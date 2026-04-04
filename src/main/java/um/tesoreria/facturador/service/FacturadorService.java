@@ -1,12 +1,13 @@
 package um.tesoreria.facturador.service;
 
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import um.tesoreria.facturador.client.tesoreria.afip.FacturacionAfipClient;
 import um.tesoreria.facturador.client.tesoreria.core.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import um.tesoreria.facturador.kotlin.tesoreria.core.dto.*;
-import um.tesoreria.facturador.kotlin.tesoreria.afip.dto.FacturacionDto;
+import um.tesoreria.facturador.model.dto.*;
+import um.tesoreria.facturador.model.dto.afip.FacturacionDto;
 
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class FacturadorService {
 
     private final ComprobanteClient comprobanteClient;
@@ -27,21 +29,6 @@ public class FacturadorService {
     private final FacturacionAfipClient facturacionAfipClient;
     private final ReciboClient reciboClient;
 
-    public FacturadorService(ComprobanteClient comprobanteClient,
-                             ChequeraFacturacionElectronicaClient chequeraFacturacionElectronicaClient,
-                             FacturacionElectronicaClient facturacionElectronicaClient,
-                             ChequeraPagoClient chequeraPagoClient,
-                             ChequeraCuotaClient chequeraCuotaClient,
-                             FacturacionAfipClient facturacionAfipClient, ReciboClient reciboClient) {
-        this.comprobanteClient = comprobanteClient;
-        this.chequeraFacturacionElectronicaClient = chequeraFacturacionElectronicaClient;
-        this.facturacionElectronicaClient = facturacionElectronicaClient;
-        this.chequeraPagoClient = chequeraPagoClient;
-        this.chequeraCuotaClient = chequeraCuotaClient;
-        this.facturacionAfipClient = facturacionAfipClient;
-        this.reciboClient = reciboClient;
-    }
-
     public String facturaPendientes() {
         log.debug("Processing FacturadorService.facturaPendientes");
         OffsetDateTime now = OffsetDateTime.now().with(LocalTime.MIDNIGHT);
@@ -50,7 +37,6 @@ public class FacturadorService {
         for (OffsetDateTime fechaPago = startDate; fechaPago.isBefore(endDate); fechaPago = fechaPago.plusDays(1)) {
             log.info("Procesando Fecha de Pago: {}", fechaPago);
             for (ChequeraPagoDto chequeraPago : chequeraPagoClient.pendientesFactura(fechaPago)) {
-                log.debug("ChequeraPago -> {}", chequeraPago.jsonify());
                 if (facturaCuota(chequeraPago)) {
                     log.info("Facturado Ok");
                 } else {
@@ -155,15 +141,15 @@ public class FacturadorService {
             chequeraFacturacionElectronica = new ChequeraFacturacionElectronicaDto();
         }
 
-        var tipoAfip = comprobante.getComprobanteAfipId();
-        var puntoVenta = comprobante.getPuntoVenta();
-        var importePagado = chequeraPago.getImporte();
+        Integer tipoAfip = comprobante.getComprobanteAfipId();
+        Integer puntoVenta = comprobante.getPuntoVenta();
+        java.math.BigDecimal importePagado = chequeraPago.getImporte();
 
-        var tipoDocumentoAfip = 80;
-        var tipoDocumento = "CUIT";
-        var apellido = chequeraFacturacionElectronica.getRazonSocial();
-        var nombre = "";
-        var numeroDocumento = chequeraFacturacionElectronica.getCuit().trim().replace("-", "");
+        Integer tipoDocumentoAfip = 80;
+        String tipoDocumento = "CUIT";
+        String apellido = chequeraFacturacionElectronica.getRazonSocial();
+        String nombre = "";
+        String numeroDocumento = chequeraFacturacionElectronica.getCuit().trim().replace("-", "");
 
         if (numeroDocumento.isEmpty()) {
             tipoDocumento = "DU";
@@ -176,7 +162,7 @@ public class FacturadorService {
 
         assert tipoAfip != null;
         assert puntoVenta != null;
-        FacturacionDto facturacion = new FacturacionDto.Builder()
+        FacturacionDto facturacion = FacturacionDto.builder()
                 .tipoDocumento(tipoDocumentoAfip)
                 .documento(numeroDocumento)
                 .tipoAfip(tipoAfip)
@@ -204,7 +190,7 @@ public class FacturadorService {
             OffsetDateTime fechaVencimientoCae = OffsetDateTime.of(localDate, LocalTime.MIDNIGHT, ZoneOffset.UTC);
             // Registra el resultado de la AFIP
             assert persona != null;
-            FacturacionElectronicaDto facturacionElectronica = new FacturacionElectronicaDto.Builder()
+            FacturacionElectronicaDto facturacionElectronica = FacturacionElectronicaDto.builder()
                     .chequeraPagoId(chequeraPago.getChequeraPagoId())
                     .comprobanteId(comprobante.getComprobanteId())
                     .numeroComprobante(facturacion.getNumeroComprobante())

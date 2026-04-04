@@ -7,6 +7,40 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-04-04
+
+### Changed
+- refactor: Migración completa de Kotlin a Java puro en todos los DTOs del proyecto.
+  - Los DTOs en `kotlin.tesoreria.*` fueron reescritos en Java en `model.dto.*`
+  - Se eliminaron las dependencias de Kotlin (`kotlin-test`, `kotlin-stdlib`, `jackson-module-kotlin`)
+  - Se eliminó el plugin `kotlin-maven-plugin` de la configuración de Maven
+  - Los clientes Feign ahora referencian los nuevos paquetes Java
+
+### Changed
+- chore: Actualización de Spring Boot parent de 4.0.2 a 4.0.5.
+- chore: Actualización de springdoc-openapi-starter-webmvc-ui de 3.0.1 a 3.0.2.
+- chore: Actualización de JDK de 24 a 25 en configuración de proyecto y workflows.
+- chore: Actualización de acciones de GitHub a últimas versiones:
+  - `actions/checkout@v4` -> `v6`
+  - `actions/setup-java@v4` -> `v5`
+  - `actions/cache@v4` -> `v5`
+  - `actions/deploy-pages@v4` -> `v5`
+  - `docker/login-action@v3` -> `v4`
+  - `docker/metadata-action@v5` -> `v6`
+  - `docker/setup-buildx-action@v3` -> `v4`
+  - `docker/build-push-action@v6` -> `v7`
+
+### Added
+- feat: Agregada dependencia `commons-fileupload` versión 1.6.0.
+
+### Removed
+- remove: Eliminación total del soporte para Kotlin.
+- remove: Eliminación de todas las dependencias de Kotlin.
+
+### Fuente
+- Basado en análisis profundo de cambios locales (`git diff HEAD`) y código fuente.
+- Actualización verificada en `pom.xml` y archivos de DTOs.
+
 ## [0.3.1] - 2026-02-03
 
 ### Changed
