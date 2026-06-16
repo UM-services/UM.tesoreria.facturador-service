@@ -7,6 +7,16 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-06-16
+
+### Changed
+- chore: Actualización de Spring Boot parent de 4.0.5 a 4.1.0.
+- chore: Actualización de Spring Cloud de 2025.1.0 a 2025.1.2.
+- chore: Actualización de springdoc-openapi-starter-webmvc-ui de 3.0.2 a 3.0.3.
+
+### Fuente
+- Basado en análisis de dependencias en `pom.xml` (`git diff HEAD`) y documentación.
+
 ## [0.4.0] - 2026-04-04
 
 ### Changed

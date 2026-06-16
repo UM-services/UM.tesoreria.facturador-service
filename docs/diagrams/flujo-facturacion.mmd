@@ -6,13 +6,13 @@ sequenceDiagram
     participant FEC as FacturacionElectronicaClient
     participant FAC as FacturacionAfipClient
 
-    C->>+FC: POST /facturar (datos)
-    FC->>+FS: facturar(datos)
+    C->>+FC: GET /api/tesoreria/facturador/facturaOne/{chequeraPagoId}
+    FC->>+FS: findOne(chequeraPagoId)
     FS->>+CCC: getByChequeraCuotaId(...)
     CCC-->>-FS: Retorna ChequeraCuotaDto
-    FS->>+FEC: getByChequeraId(...)
+    FS->>+FEC: getByChequeraPagoId(...)
     FEC-->>-FS: Retorna FacturacionElectronicaDto
     FS->>+FAC: generarComprobante(factura)
     FAC-->>-FS: Retorna ComprobanteAfipDto (con CAE)
-    FS-->>-FC: Retorna Comprobante
-    FC-->>-C: Retorna 200 OK (Comprobante)
+    FS-->>-FC: Retorna comprobante procesado
+    FC-->>-C: Retorna 200 OK (respuesta)

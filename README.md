@@ -4,8 +4,8 @@
 
 #### Lenguajes y Plataformas
 ![Java](https://img.shields.io/badge/Java-25-red?style=for-the-badge&logo=openjdk)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.5-green?style=for-the-badge&logo=spring-boot)
-![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.1.0-green?style=for-the-badge&logo=spring-cloud)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.1.0-green?style=for-the-badge&logo=spring-boot)
+![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.1.2-green?style=for-the-badge&logo=spring-cloud)
 
 #### Bases de Datos y Caché
 ![Caffeine](https://img.shields.io/badge/Caffeine_Cache-3.1.8-blue?style=for-the-badge)
@@ -21,7 +21,7 @@
 ![Lombok](https://img.shields.io/badge/Lombok-1.18.30-pink?style=for-the-badge)
 
 #### Documentación y API
-![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.2-blue?style=for-the-badge&logo=openapi)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.3-blue?style=for-the-badge&logo=openapi)
 
 ### Estado del Pipeline
 [![UM.tesoreria.facturador-service CI](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml/badge.svg)](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml)
@@ -61,12 +61,12 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 
 ### Backend
 - Java 25
-- Spring Boot 4.0.5
-- Spring Cloud 2025.1.0
+- Spring Boot 4.1.0
+- Spring Cloud 2025.1.2
 - Maven 3.9+
 
 ### Herramientas y Utilidades
-- SpringDoc OpenAPI 3.0.2
+- SpringDoc OpenAPI 3.0.3
 - Spring AOP
 - Spring Validation
 - Feign Client para comunicación síncrona
@@ -82,13 +82,13 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 ## 🔄 API Endpoints
 
 ### Facturación
-- `GET /facturador/facturaPendientes`: Procesa facturas pendientes
-- `GET /facturador/facturaOne/{chequeraPagoId}`: Procesa una factura específica
-- `GET /facturador/sendOne/pago/{chequeraPagoId}`: Envía recibo por ID de chequera
-- `GET /facturador/sendOne/factura/{facturacionElectronicaId}`: Envía recibo por ID de factura
+- `GET /api/tesoreria/facturador/facturaPendientes`: Procesa facturas pendientes
+- `GET /api/tesoreria/facturador/facturaOne/{chequeraPagoId}`: Procesa una factura específica
+- `GET /api/tesoreria/facturador/sendOne/pago/{chequeraPagoId}`: Envía recibo por ID de chequera
+- `GET /api/tesoreria/facturador/sendOne/recibo/{facturacionElectronicaId}`: Envía recibo por ID de factura
 
 ### Características Principales
-- Integración con Eureka para registro de servicios
+- Integración con Consul para registro de servicios
 - Caché distribuido con Caffeine
 - Validación de datos con Spring Validation
 - Documentación automática con OpenAPI
@@ -139,81 +139,6 @@ El proyecto utiliza varias herramientas para mantener la calidad del código:
    - CI/CD automatizado
    - Generación de documentación
    - Análisis de calidad
-- JDK 21
-- Maven 3.9+
-- Docker y Docker Compose
-
-### Instalación Local
-
-```bash
-# Clonar repositorio
-git clone https://github.com/UM-services/UM.tesoreria.facturador-service.git
-
-# Instalar dependencias
-mvn clean install
-
-# Ejecutar
-mvn spring-boot:run
-```
-
-### Docker
-
-```bash
-# Construir imagen
-docker build -t um-tesoreria-facturador-service .
-
-# Ejecutar contenedor
-docker run -p 8080:8080 um-tesoreria-facturador-service
-```
-
-## 🔍 Monitoreo y Métricas
-
-El servicio expone endpoints de monitoreo a través de Spring Actuator:
-- `/actuator/health`: Estado de salud del servicio
-- `/actuator/metrics`: Métricas del sistema
-- `/actuator/info`: Información del servicio
-
-## 📝 Notas
-- El envío automático de facturas pendientes se ejecuta cada hora (cron: "0 0 * * * *")
-- Se procesan hasta 100 facturas pendientes por ejecución
-- La comunicación con tesoreria-sender-service es síncrona
-- Se recomienda revisar el CHANGELOG.md para conocer las últimas actualizaciones
 
 ## ✍️ Autor
 - Universidad de Mendoza - Ing. Daniel Quinteros
-
-### Características
-- Comunicación síncrona con tesoreria-sender-service
-- Procesamiento optimizado de facturas pendientes
-- Sistema de caché con Caffeine
-- Documentación automática con OpenAPI
-- Integración con Eureka para registro de servicios
-- Sistema de monitoreo con Spring Actuator
-- Validación de datos con Spring Validation
-
-### Notas
-- El servicio procesa facturas pendientes de forma programada
-- Se utiliza comunicación síncrona directa con tesoreria-sender-service
-- El sistema implementa un procesamiento optimizado por lotes
-- Se mantiene un sistema de logging detallado para seguimiento de operaciones
-- Se utiliza caché para optimizar el rendimiento
-- La documentación de la API está disponible a través de OpenAPI
-
-### Endpoints
-- `/facturador/recibo`: Endpoint para el procesamiento de recibos
-- `/facturador/recibo/pendientes`: Endpoint para consultar recibos pendientes
-- `/actuator`: Endpoints de monitoreo y métricas
-- `/v3/api-docs`: Documentación OpenAPI
-- `/swagger-ui.html`: Interfaz de Swagger UI
-
-### Dependencias Principales
-- Spring Boot 4.0.5
-- Spring Cloud 2025.1.0
-- Spring WebFlux
-- Spring Cloud OpenFeign
-- Spring Boot Actuator
-- Spring Boot Validation
-- Spring Boot Cache
-- Caffeine Cache
-- SpringDoc OpenAPI 3.0.2
-- Lombok
