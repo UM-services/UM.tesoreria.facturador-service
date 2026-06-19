@@ -16,8 +16,8 @@
 ![SonarCloud](https://img.shields.io/badge/SonarCloud-latest-blue?style=for-the-badge&logo=sonarcloud)
 
 #### Frameworks y Librerías
-![Spring WebFlux](https://img.shields.io/badge/Spring_WebFlux-4.0.x-green?style=for-the-badge&logo=spring)
-![Spring Actuator](https://img.shields.io/badge/Spring_Actuator-4.0.x-green?style=for-the-badge&logo=spring)
+![Spring WebFlux](https://img.shields.io/badge/Spring_WebFlux-4.1.x-green?style=for-the-badge&logo=spring)
+![Spring Actuator](https://img.shields.io/badge/Spring_Actuator-4.1.x-green?style=for-the-badge&logo=spring)
 ![Lombok](https://img.shields.io/badge/Lombok-1.18.30-pink?style=for-the-badge)
 
 #### Documentación y API

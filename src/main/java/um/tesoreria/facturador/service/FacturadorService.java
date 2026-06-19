@@ -90,6 +90,7 @@ public class FacturadorService {
             chequeraPago = chequeraPagoClient.findByChequeraPagoId(facturacionElectronica.getChequeraPagoId());
             log.debug("ChequeraPago -> {}", chequeraPago.jsonify());
         } catch (Exception e) {
+            log.debug("\n\nError enviando recibo -> {}\n\n", e.getMessage());
             return "Facturación pendiente";
         }
         log.debug("FacturadorService.sendOneByFacturacionElectronicaId.enviandoRecibo");
