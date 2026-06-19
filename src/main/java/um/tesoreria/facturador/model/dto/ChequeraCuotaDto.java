@@ -27,19 +27,19 @@ public class ChequeraCuotaDto {
     private Integer anho = 0;
     private Integer arancelTipoId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXX", timezone = "UTC")
     private OffsetDateTime vencimiento1;
 
     private BigDecimal importe1 = BigDecimal.ZERO;
     private BigDecimal importe1Original = BigDecimal.ZERO;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXX", timezone = "UTC")
     private OffsetDateTime vencimiento2;
 
     private BigDecimal importe2 = BigDecimal.ZERO;
     private BigDecimal importe2Original = BigDecimal.ZERO;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXX", timezone = "UTC")
     private OffsetDateTime vencimiento3;
 
     private BigDecimal importe3 = BigDecimal.ZERO;

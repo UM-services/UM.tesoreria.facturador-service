@@ -7,6 +7,18 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2026-06-19
+
+### Fixed
+- fix: Corregido formato de serialización ISO 8601 para OffsetDateTime en DTOs. Cambio del patrón de timezone `Z` (ej. `+0000`) a `XX` (ej. `+00:00`) para cumplir con el estándar ISO 8601. Afecta a: ChequeraCuotaDto, ChequeraPagoDto, ChequeraSerieDto, DomicilioDto, FacturacionElectronicaDto, LectivoDto.
+
+### Changed
+- chore: Mejorado logging de errores en `FacturadorService.sendOneByFacturacionElectronicaId` al fallar el envío de recibos.
+- chore: Limpieza cosmética del archivo `banner.txt`.
+
+### Fuente
+- Basado en análisis de cambios locales (`git diff HEAD`) en DTOs, FacturadorService.java y banner.txt.
+
 ## [0.4.1] - 2026-06-16
 
 ### Changed
