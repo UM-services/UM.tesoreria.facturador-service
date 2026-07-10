@@ -94,7 +94,7 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 - Documentación automática con OpenAPI
 - Monitoreo con Spring Actuator
 - Comunicación síncrona con tesoreria-sender-service
-- Envío programado de facturas pendientes cada hora
+- Envío programado de facturas pendientes cada 5 minutos
 - Procesamiento automático de lotes de hasta 100 facturas
 
 ## 🛠️ Desarrollo

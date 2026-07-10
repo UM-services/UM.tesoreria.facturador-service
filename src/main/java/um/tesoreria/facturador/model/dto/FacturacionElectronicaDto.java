@@ -2,7 +2,7 @@ package um.tesoreria.facturador.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import um.tesoreria.facturador.tool.Jsonifier;
+import um.tesoreria.facturador.tool.Jsonifyable;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FacturacionElectronicaDto {
+public class FacturacionElectronicaDto implements Jsonifyable {
 
     private Long facturacionElectronicaId;
     private Long chequeraPagoId;
@@ -46,9 +46,5 @@ public class FacturacionElectronicaDto {
     private Integer retries = 0;
     private ChequeraPagoDto chequeraPago;
     private ComprobanteDto comprobante;
-
-    public String jsonify() {
-        return Jsonifier.builder(this).build();
-    }
 
 }
