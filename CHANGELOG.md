@@ -7,6 +7,15 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.3] - 2026-07-10
+
+### Changed
+- refactor: Extracción de la interfaz `Jsonifyable` para unificar el método `jsonify()` en DTOs. `FacturacionElectronicaDto` ahora implementa `Jsonifyable` en lugar de duplicar la lógica de serialización JSON.
+- chore: Mejora del logging en `FacturadorService.sendOneByChequeraPagoId` con mensajes más descriptivos y formato mejorado para facilitar debugging.
+
+### Fuente
+- Basado en análisis de cambios locales (`git diff HEAD`) en `Jsonifyable.java`, `FacturacionElectronicaDto.java` y `FacturadorService.java`.
+
 ## [0.4.2] - 2026-06-19
 
 ### Fixed

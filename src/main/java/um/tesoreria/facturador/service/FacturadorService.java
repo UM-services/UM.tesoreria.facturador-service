@@ -66,17 +66,17 @@ public class FacturadorService {
     }
 
     public String sendOneByChequeraPagoId(Long chequeraPagoId) {
-        log.debug("Processing FacturadorService.sendOneByChequeraPagoId");
+        log.debug("\n\nProcessing FacturadorService.sendOneByChequeraPagoId\n\n");
         FacturacionElectronicaDto facturacionElectronica;
-        ChequeraPagoDto chequeraPago;
         try {
             facturacionElectronica = facturacionElectronicaClient.findByChequeraPagoId(chequeraPagoId);
-            chequeraPago = chequeraPagoClient.findByChequeraPagoId(chequeraPagoId);
+            chequeraPagoClient.findByChequeraPagoId(chequeraPagoId);
         } catch (Exception e) {
+            log.error("Facturacion pendiente");
             return "Facturación pendiente";
         }
         log.debug("FacturacionElectronica -> {}", facturacionElectronica.jsonify());
-        log.debug("FacturadorService.sendOneByChequeraPagoId.enviandoRecibo");
+        log.debug("\n\nFacturadorService.sendOneByChequeraPagoId.enviandoRecibo\n\n");
         return reciboClient.send(facturacionElectronica.getFacturacionElectronicaId());
     }
 
