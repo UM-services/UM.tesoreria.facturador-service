@@ -1,15 +1,11 @@
 graph TD
-    subgraph "Entorno de Despliegue (e.g., Servidor Linux)"
-        subgraph "Docker"
-            container("
-                <b>Contenedor: facturador-service</b><br/>
-                Aplicación Spring Boot<br/>
-                Puerto Expuesto: 8080
-            ")
+    subgraph Entorno["Entorno de Despliegue (Servidor Linux)"]
+        subgraph Docker["Docker"]
+            container[("<b>Contenedor: facturador-service</b><br/>Aplicación Spring Boot<br/>Puerto Expuesto: 8080")]
         end
     end
 
-    subgraph "Red Externa"
+    subgraph RedExterna["Red Externa"]
         lb[("Load Balancer / Gateway")]
     end
 
