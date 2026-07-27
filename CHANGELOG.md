@@ -7,6 +7,14 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.4] - 2026-07-27
+
+### Changed
+- chore(config): Configuración de timeouts de OpenFeign en `bootstrap.yml`. Se establece `connectTimeout` en 15 segundos y `readTimeout` en 300 segundos (5 minutos) para mejorar la resiliencia en comunicaciones síncronas con servicios externos.
+
+### Fuente
+- Basado en análisis de cambios staged (`git diff HEAD`) en `src/main/resources/bootstrap.yml`.
+
 ## [0.4.3] - 2026-07-10
 
 ### Changed
