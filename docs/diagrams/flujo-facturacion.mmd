@@ -1,18 +1,35 @@
 sequenceDiagram
+    autonumber
     participant C as Cliente API
-    participant FC as FacturadorController
-    participant FS as FacturadorService
-    participant CCC as ChequeraCuotaClient
-    participant FEC as FacturacionElectronicaClient
-    participant FAC as FacturacionAfipClient
+    participant EC as EmisionController
+    participant ES as EmisionService
+    participant FP as FacturarPagoUseCaseImpl
+    participant FE as FacturacionElectronicaService
+    participant CP as ChequeraPagoService
+    participant CU as ChequeraCuotaService
+    participant CO as ComprobanteService
+    participant AF as FacturacionAfipService
 
-    C->>+FC: GET /api/tesoreria/facturador/facturaOne/{chequeraPagoId}
-    FC->>+FS: findOne(chequeraPagoId)
-    FS->>+CCC: getByChequeraCuotaId(...)
-    CCC-->>-FS: Retorna ChequeraCuotaDto
-    FS->>+FEC: getByChequeraPagoId(...)
-    FEC-->>-FS: Retorna FacturacionElectronicaDto
-    FS->>+FAC: generarComprobante(factura)
-    FAC-->>-FS: Retorna ComprobanteAfipDto (con CAE)
-    FS-->>-FC: Retorna comprobante procesado
-    FC-->>-C: Retorna 200 OK (respuesta)
+    C->>+EC: GET /api/tesoreria/facturador/facturaOne/{chequeraPagoId}
+    EC->>+ES: facturaOne(chequeraPagoId)
+    ES->>+FP: facturarPago(chequeraPagoId)
+    FP->>+FE: getByChequeraPagoId(chequeraPagoId)
+    FE-->>-FP: Sin facturación previa
+    FP->>+CP: getById(chequeraPagoId)
+    CP-->>-FP: ChequeraPago
+    FP->>FP: facturarCuota(chequeraPago)
+    opt La cuota no vino asociada al pago
+        FP->>+CU: getByUnique(facultad, tipoChequera, serie, producto, alternativa, cuota)
+        CU-->>-FP: ChequeraCuota
+    end
+    FP->>+CO: getById(14)
+    CO-->>-FP: Comprobante
+    FP->>+AF: test()
+    AF-->>-FP: Estado del servicio
+    FP->>+AF: facturar(SolicitudFacturacionAfip)
+    AF-->>-FP: RespuestaFacturacionAfip con CAE
+    FP->>+FE: registrar(FacturacionElectronica)
+    FE-->>-FP: Facturación registrada
+    FP-->>-ES: "Facturado Ok" o "Facturado NO"
+    ES-->>-EC: Resultado
+    EC-->>-C: 200 OK
