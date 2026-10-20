@@ -1,39 +1,52 @@
 erDiagram
     FACTURACION_ELECTRONICA {
-        int id
+        long facturacionElectronicaId
+        long chequeraPagoId
+        int comprobanteId
+        long numeroComprobante
         string cae
+        string condicionIva
+        decimal importe
+        date fechaRecibo
         date fechaVencimientoCae
-        string numeroComprobante
-        int idCondicionIva
+        int enviada
     }
 
-    CHEQUERA_FACTURACION {
-        int id
-        int chequeraId
-        int facturacionElectronicaId
+    CHEQUERA_PAGO {
+        long chequeraPagoId
+        int facultadId
+        int tipoChequeraId
+        long chequeraSerieId
+        int productoId
+        int alternativaId
+        int cuotaId
+        decimal importe
+        long chequeraId
     }
 
     CHEQUERA_CUOTA {
-        int id
-        int chequeraId
-        decimal importe
-        date fechaVencimiento
+        long chequeraId
+        decimal personaId
+        string personaApellido
+        string personaNombre
+    }
+
+    CHEQUERA_FACTURACION_ELECTRONICA {
+        long chequeraFacturacionElectronicaId
+        long chequeraId
+        string cuit
+        string razonSocial
+        string condicionIva
     }
 
     COMPROBANTE {
-        int id
-        string tipoComprobante
-        string numero
-        decimal importeTotal
+        int comprobanteId
+        string descripcion
+        int comprobanteAfipId
+        int puntoVenta
     }
 
-    PERSONA {
-        int personaId
-        string nombre
-        string cuit
-    }
-
-    FACTURACION_ELECTRONICA ||--o{ CHEQUERA_FACTURACION : "tiene"
-    CHEQUERA_CUOTA ||--o{ CHEQUERA_FACTURACION : "es parte de"
-    COMPROBANTE }o--|| FACTURACION_ELECTRONICA : "genera"
-    PERSONA }o--|| CHEQUERA_CUOTA : "asociada a"
+    CHEQUERA_PAGO ||--o| FACTURACION_ELECTRONICA : "origina"
+    CHEQUERA_PAGO ||--o| CHEQUERA_CUOTA : "referencia"
+    CHEQUERA_CUOTA }o--o| CHEQUERA_FACTURACION_ELECTRONICA : "comparte chequeraId"
+    COMPROBANTE ||--o{ FACTURACION_ELECTRONICA : "tipifica"

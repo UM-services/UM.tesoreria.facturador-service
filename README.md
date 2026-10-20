@@ -4,8 +4,8 @@
 
 #### Lenguajes y Plataformas
 ![Java](https://img.shields.io/badge/Java-25-red?style=for-the-badge&logo=openjdk)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.1.0-green?style=for-the-badge&logo=spring-boot)
-![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.1.2-green?style=for-the-badge&logo=spring-cloud)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.1.1-green?style=for-the-badge&logo=spring-boot)
+![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.1.3-green?style=for-the-badge&logo=spring-cloud)
 
 #### Bases de Datos y Caché
 ![Caffeine](https://img.shields.io/badge/Caffeine_Cache-3.1.8-blue?style=for-the-badge)
@@ -44,25 +44,27 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 
 ## 🏗️ Arquitectura
 
-### Componentes Principales
-- **Controller**: Maneja las peticiones HTTP y expone los endpoints REST
-- **Service**: Implementa la lógica de negocio y la gestión de transacciones
-- **Model**: Define los DTOs y entidades del sistema
-- **Configuration**: Configuración de Spring
-- **Client**: Integración con servicios externos
+El servicio sigue una arquitectura hexagonal (puertos y adaptadores) organizada por slices
+bajo `um.tesoreria.facturador.hexagonal.facturacion`:
+
+- **Datos** (`datos`): slices `chequeraCuota`, `chequeraFacturacionElectronica`, `chequeraPago`, `comprobante` y `facturacionElectronica`. Cada uno contiene modelo de dominio, puertos `in`/`out`, servicios de aplicación, casos de uso, adaptadores, DTOs de cliente y mappers.
+- **Gateways** (`gateways`): integraciones externas `afip` (facturación electrónica) y `recibo` (envío de recibos), con el mismo patrón de puertos y adaptadores.
+- **Procesos** (`procesos`): `emision` (facturación de cuotas y pendientes) y `envio` (envío de recibos y facturas pendientes). Cada proceso expone sus controladores REST y schedulers en su capa de infraestructura.
+- **Soporte** (`infrastructure.client.support`): `Jsonifier` y `Jsonifyable` para logging estructurado.
+- **Configuration**: configuración de Spring, OpenFeign y Consul.
 
 ### Flujo de Datos
-1. Recepción de peticiones HTTP
-2. Procesamiento de facturas y recibos
-3. Integración con AFIP
-4. Gestión de estados y transacciones
+1. `EmisionController` o `EnvioController` reciben las peticiones HTTP; los schedulers disparan los mismos procesos de forma automática.
+2. El servicio de aplicación delega en los casos de uso del proceso.
+3. Los casos de uso obtienen datos a través de los slices de datos y de los gateways (AFIP y recibos).
+4. Los adaptadores de salida traducen entre el modelo de dominio y los DTOs de los servicios externos.
 
 ## 🚀 Stack Tecnológico
 
 ### Backend
 - Java 25
-- Spring Boot 4.1.0
-- Spring Cloud 2025.1.2
+- Spring Boot 4.1.1
+- Spring Cloud 2025.1.3
 - Maven 3.9+
 
 ### Herramientas y Utilidades
@@ -95,6 +97,7 @@ Microservicio de facturación electrónica para UM Tesorería. Se encarga de:
 - Monitoreo con Spring Actuator
 - Comunicación síncrona con tesoreria-sender-service
 - Envío programado de facturas pendientes cada 5 minutos
+- Facturación programada de pendientes todos los días a las 02:00
 - Procesamiento automático de lotes de hasta 100 facturas
 
 ## 🛠️ Desarrollo
