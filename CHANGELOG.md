@@ -7,6 +7,14 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1] - 2026-10-21
+
+### Fixed
+- fix(config): Consul ahora verifica el estado del servicio contra la ruta de readiness (`/actuator/health/readiness`) mediante `spring.cloud.consul.discovery.health-check-path`, en lugar del health agregado por defecto. Además se configura `health-check-critical-timeout: 5m` para que Consul elimine del catálogo una instancia que permanezca en estado crítico durante cinco minutos.
+
+### Fuente
+- Basado en análisis de cambios staged (`git diff HEAD`) en `src/main/resources/bootstrap.yml`.
+
 ## [0.5.0] - 2026-10-20
 
 ### Added
