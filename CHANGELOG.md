@@ -7,6 +7,19 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.2] - 2026-10-23
+
+### Changed
+- chore(deps): actualización del parent Spring Boot de 4.1.1 a 4.1.2 y de Spring Cloud de 2025.1.3 a 2025.1.4.
+- chore(deps): actualización de `springdoc-openapi-starter-webmvc-ui` de 3.0.3 a 3.1.1, `commons-lang3` de 3.20.0 a 3.21.0 y `jacoco-maven-plugin` de 0.8.13 a 0.8.15.
+
+### Fixed
+- fix(config): `spring.cloud.consul.discovery.query-passing: true` para que Feign/LoadBalancer resuelvan únicamente instancias de Consul con sus checks en estado passing, evitando enrutar tráfico a instancias no saludables.
+
+### Fuente
+- Basado en análisis de cambios staged (`git diff HEAD`) en `pom.xml` y `src/main/resources/bootstrap.yml`.
+- Fecha de release tomada de la fecha del entorno de trabajo.
+
 ## [0.5.1] - 2026-10-21
 
 ### Fixed

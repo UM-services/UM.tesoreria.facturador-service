@@ -4,8 +4,8 @@
 
 #### Lenguajes y Plataformas
 ![Java](https://img.shields.io/badge/Java-25-red?style=for-the-badge&logo=openjdk)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.1.1-green?style=for-the-badge&logo=spring-boot)
-![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.1.3-green?style=for-the-badge&logo=spring-cloud)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.1.2-green?style=for-the-badge&logo=spring-boot)
+![Spring Cloud](https://img.shields.io/badge/Spring_Cloud-2025.1.4-green?style=for-the-badge&logo=spring-cloud)
 
 #### Bases de Datos y Caché
 ![Caffeine](https://img.shields.io/badge/Caffeine_Cache-3.1.8-blue?style=for-the-badge)
@@ -21,7 +21,7 @@
 ![Lombok](https://img.shields.io/badge/Lombok-1.18.30-pink?style=for-the-badge)
 
 #### Documentación y API
-![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.3-blue?style=for-the-badge&logo=openapi)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1.1-blue?style=for-the-badge&logo=openapi)
 
 ### Estado del Pipeline
 [![UM.tesoreria.facturador-service CI](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml/badge.svg)](https://github.com/UM-services/UM.tesoreria.facturador-service/actions/workflows/maven.yml)
@@ -63,12 +63,12 @@ bajo `um.tesoreria.facturador.hexagonal.facturacion`:
 
 ### Backend
 - Java 25
-- Spring Boot 4.1.1
-- Spring Cloud 2025.1.3
+- Spring Boot 4.1.2
+- Spring Cloud 2025.1.4
 - Maven 3.9+
 
 ### Herramientas y Utilidades
-- SpringDoc OpenAPI 3.0.3
+- SpringDoc OpenAPI 3.1.1
 - Spring AOP
 - Spring Validation
 - Feign Client para comunicación síncrona
