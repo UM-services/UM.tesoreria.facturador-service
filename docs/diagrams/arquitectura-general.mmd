@@ -1,21 +1,59 @@
 graph TD
-    subgraph Sistema_Externo
-        afip_ws["AFIP Web Service"]
-        core_api["Tesoreria Core API"]
+    subgraph Entradas["Adaptadores de entrada"]
+        cliente["Cliente API"]
+        emision_controller["EmisionController"]
+        envio_controller["EnvioController"]
+        emision_scheduler["EmisionScheduler"]
+        envio_scheduler["EnvioScheduler"]
     end
 
-    subgraph UM_Tesoreria_Facturador_Service
-        controller[FacturadorController]
-        service[FacturadorService]
-        clients[Clients]
+    subgraph Aplicacion["Aplicación - procesos"]
+        emision_service["EmisionService"]
+        envio_service["EnvioService"]
+        casos_uso["Casos de uso: facturar / enviar"]
     end
 
-    controller --> service
-    service --> clients
-    clients --> afip_ws
-    clients --> core_api
+    subgraph Dominio["Dominio"]
+        modelos["Modelos de dominio"]
+        puertos_in["Puertos in"]
+        puertos_out["Puertos out"]
+    end
 
-    style UM_Tesoreria_Facturador_Service fill:#f9f,stroke:#333,stroke-width:2px
-    style controller fill:#bbf,stroke:#333,stroke-width:2px
-    style service fill:#bbf,stroke:#333,stroke-width:2px
-    style clients fill:#bbf,stroke:#333,stroke-width:2px
+    subgraph Datos["Slices de datos y gateways"]
+        slices["ChequeraCuota, ChequeraPago, Comprobante, FacturacionElectronica, ChequeraFacturacionElectronica"]
+        gateways["Gateways AFIP y Recibo"]
+    end
+
+    subgraph Salida["Adaptadores de salida"]
+        adapters["ClientAdapter y Mapper"]
+        feign["Clientes Feign"]
+    end
+
+    subgraph Externos["Sistemas externos"]
+        core["Tesoreria Core API"]
+        afip["AFIP Web Service"]
+        sender["tesoreria-sender-service"]
+    end
+
+    cliente --> emision_controller
+    cliente --> envio_controller
+    emision_scheduler --> emision_service
+    envio_scheduler --> envio_service
+    emision_controller --> emision_service
+    envio_controller --> envio_service
+    emision_service --> casos_uso
+    envio_service --> casos_uso
+    casos_uso --> puertos_in
+    casos_uso --> slices
+    casos_uso --> gateways
+    puertos_in --> modelos
+    slices --> puertos_out
+    gateways --> puertos_out
+    puertos_out --> adapters
+    adapters --> feign
+    feign --> core
+    feign --> afip
+    feign --> sender
+
+    style Aplicacion fill:#f9f,stroke:#333,stroke-width:2px
+    style Dominio fill:#bbf,stroke:#333,stroke-width:2px

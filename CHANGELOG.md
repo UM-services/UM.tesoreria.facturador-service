@@ -7,6 +7,51 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.2] - 2026-10-23
+
+### Changed
+- chore(deps): actualización del parent Spring Boot de 4.1.1 a 4.1.2 y de Spring Cloud de 2025.1.3 a 2025.1.4.
+- chore(deps): actualización de `springdoc-openapi-starter-webmvc-ui` de 3.0.3 a 3.1.1, `commons-lang3` de 3.20.0 a 3.21.0 y `jacoco-maven-plugin` de 0.8.13 a 0.8.15.
+
+### Fixed
+- fix(config): `spring.cloud.consul.discovery.query-passing: true` para que Feign/LoadBalancer resuelvan únicamente instancias de Consul con sus checks en estado passing, evitando enrutar tráfico a instancias no saludables.
+
+### Fuente
+- Basado en análisis de cambios staged (`git diff HEAD`) en `pom.xml` y `src/main/resources/bootstrap.yml`.
+- Fecha de release tomada de la fecha del entorno de trabajo.
+
+## [0.5.1] - 2026-10-21
+
+### Fixed
+- fix(config): Consul ahora verifica el estado del servicio contra la ruta de readiness (`/actuator/health/readiness`) mediante `spring.cloud.consul.discovery.health-check-path`, en lugar del health agregado por defecto. Además se configura `health-check-critical-timeout: 5m` para que Consul elimine del catálogo una instancia que permanezca en estado crítico durante cinco minutos.
+
+### Fuente
+- Basado en análisis de cambios staged (`git diff HEAD`) en `src/main/resources/bootstrap.yml`.
+
+## [0.5.0] - 2026-10-20
+
+### Added
+- feat(test): Nueva suite de pruebas con `ArquitecturaHexagonalTest`, contratos HTTP, Feign, scheduling y wire format, más tests unitarios de casos de uso y del mapper de `ChequeraPago`.
+- ci: Nuevos workflows `deploy-develop.yml` y `deploy-staging.yml` con verificación (`mvn -B verify`), build y publicación de imagen Docker y despliegue por rama (`develop` y `staging`).
+
+### Changed
+- refactor: Reestructuración completa a arquitectura hexagonal (puertos y adaptadores) bajo `um.tesoreria.facturador.hexagonal.facturacion`:
+  - Slices de datos `chequeraCuota`, `chequeraFacturacionElectronica`, `chequeraPago`, `comprobante` y `facturacionElectronica`, cada uno con modelo de dominio, puertos `in`/`out`, servicios, casos de uso, adaptadores, DTOs de cliente y mappers.
+  - Gateways `afip` y `recibo` con el mismo patrón de puertos y adaptadores.
+  - Procesos `emision` (`EmisionController`, `EmisionScheduler` y casos de uso de facturación) y `envio` (`EnvioController`, `EnvioScheduler` y casos de uso de envío).
+  - Los clientes Feign y los DTOs de integración se mueven dentro de la infraestructura de cada slice.
+  - Se conserva sin cambios el contrato HTTP: mismas cuatro rutas `GET` bajo `/api/tesoreria/facturador` y mismos cuerpos de respuesta.
+- refactor: `Jsonifier` y `Jsonifyable` se trasladan a `hexagonal.facturacion.infrastructure.client.support`.
+- chore: Actualización de Spring Boot parent de 4.1.0 a 4.1.1.
+- chore: Actualización de Spring Cloud de 2025.1.2 a 2025.1.3.
+
+### Removed
+- remove: `FacturadorController`, `FacturadorService`, `model.dto.*` y `client.tesoreria.*` reemplazados por la nueva estructura hexagonal.
+
+### Fuente
+- Basado en análisis de cambios staged (`git diff HEAD`) en `pom.xml`, `src/main/java`, `src/test/java`, `.github/workflows/` y `git show HEAD` de las clases eliminadas.
+- Fecha de release tomada de la fecha del entorno de trabajo.
+
 ## [0.4.4] - 2026-07-27
 
 ### Changed
@@ -40,7 +85,7 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ### Changed
 - chore: Actualización de Spring Boot parent de 4.0.5 a 4.1.0.
-- chore: Actualización de Spring Cloud de 2025.1.0 a 2025.1.2.
+- chore: Actualización de Spring Cloud de 2025.1.0 a 2025.1.3.
 - chore: Actualización de springdoc-openapi-starter-webmvc-ui de 3.0.2 a 3.0.3.
 
 ### Fuente
